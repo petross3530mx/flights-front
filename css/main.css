@@ -428,6 +428,15 @@ section.flights-to .modal-block.modal-show .popup {
   max-width: 400px;
   margin: 25vh auto;
 }
+section.flights-to .from-to-switch .flights-to .flights-detail {
+  font-family: SF UI Text;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  max-width: 100%;
+  position: relative;
+  margin-left: 20px;
+}
 section.flights-to .modal-block.modal-show .popup::before {
   content: "";
   background: url(../img/sendmail.svg) #9766e3 center no-repeat;
@@ -534,7 +543,7 @@ section.flights-to .depature-return .flights-modal > div .vhd-container > div {
   border: 1px solid #7367f0;
   box-sizing: border-box;
   border-radius: 5px;
-  padding: 8px;
+  padding: 9px 20px;
 }
 .flghts-upblock .day_year {
   font-size: 13px;
