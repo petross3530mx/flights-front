@@ -20,13 +20,6 @@ flightsto_form.addEventListener("submit", function(e) {
   flightsmain.classList.toggle("modal-show");
 });
 
-let okbtn = flightsmain.querySelector(".okbtn");
-
-okbtn.addEventListener("click", function() {
-  flightsmain.classList.toggle("modal-show");
-});
-
-//axios = require("axios");
 import Vue from "vue";
 
 Vue.config.devtools = true;
