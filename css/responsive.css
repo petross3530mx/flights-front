@@ -1,0 +1,66 @@
+@media (min-width: 361px) {
+  section.flights-to .flights-search-field {
+    width: 400px;
+    margin: auto;
+  }
+  section.flights-to .flights-class-selector {
+    display: flex;
+    max-width: 400px;
+    margin: 16px auto 24px;
+    justify-content: space-between;
+    padding: 3px;
+  }
+  section.flights-to .flights-class-selector span {
+    padding: 12px 20px;
+  }
+  section.flights-to.modal-show .modal-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+  section.flights-to.modal-show .modal-block .popup {
+    max-width: 400px;
+    margin: 139px auto;
+  }
+}
+@media (min-width: 768px) {
+  /* main:before {
+    background: url(../img/map-big.svg) #9766e3;
+    background-repeat: no-repeat;
+    background-position: center 40px;
+  } */
+  .flights-results.results-mobile {
+    display: none;
+  }
+  .flights-results.results-desktop {
+    display: block;
+  }
+}
+@media (min-width: 1280px) {
+}
+
+@media (max-width: 1280px) {
+}
+
+@media (max-width: 768px) {
+  section.flights-to.results:before {
+    background-color: #7367f0;
+  }
+}
+
+@media (max-width: 360px) {
+  section.flights-to:after {
+    content: "";
+    background: #fff;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 178px;
+    left: 0;
+  }
+  section.flights-to .flights-head-title {
+    padding-top: 52px;
+    z-index: 1;
+    position: relative;
+  }
+}
