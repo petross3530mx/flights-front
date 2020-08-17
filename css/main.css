@@ -1054,6 +1054,7 @@ input#return_city {
   padding: 8px 34px;
   border-radius: 21px;
   right: 0;
+  cursor: pointer;
 }
 .dropdown-content {
   max-height: 40vh;

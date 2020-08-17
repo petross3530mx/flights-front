@@ -13,7 +13,7 @@
     <div class="flights-to-dashboard flights-search-field disable-select">
       <div class="from-to-switch">
         <div :class="{'modal-show':show_airports_modal}" class="flights-modal">
-          <div :class="[{'grayd': !airport_to.name||!airport_from.name}]">
+          <div>
             <div class="airport-upper">
               <span>From</span>
               <div class="iata">{{airport_iata(airport_from)}}</div>
