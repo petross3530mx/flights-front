@@ -166,6 +166,7 @@ section.flights-to .passengers > div {
   text-align: left;
   margin-top: 16px;
   width: 40%;
+  height: 88px;
 }
 section.flights-to .flights-from > div,
 section.flights-to .flights-to > div {
@@ -193,6 +194,10 @@ section.flights-to .passengers > div > span {
   font-size: 14px;
   line-height: 17px;
   text-align: left;
+}
+section.flights-to .passengers > div > span {
+  margin-bottom: 6px;
+  display: block;
 }
 section.flights-to .from-to-switch .letter_id {
   font-family: SF UI Text;
@@ -249,7 +254,8 @@ section.flights-to .from-to-switch .airport-upper .iata {
 section.flights-to .from-to-switch .airport-upper .airport-description {
   font-size: 13px;
   letter-spacing: -0.11917px;
-  color: #000;
+  color: #808080;
+  font-weight: bold;
 }
 section.flights-to .depature-return {
   display: flex;
@@ -702,6 +708,13 @@ section.flights-to .flights-to > div.grayd {
 }
 .airportpicker {
   padding: 4px;
+}
+.airportpicker > p {
+  font-size: 14px;
+  letter-spacing: -0.11917px;
+  color: #808080;
+  font-weight: bold;
+  margin-bottom: 8px;
 }
 section.flights-to .results-container {
   z-index: 10;

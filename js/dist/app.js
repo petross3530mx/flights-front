@@ -4860,106 +4860,115 @@ var render = function() {
                 class: { "modal-show": _vm.show_airports_modal }
               },
               [
-                _c("div", [
-                  _c("div", { staticClass: "airport-upper" }, [
-                    _c("span", [_vm._v("From")]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "iata" }, [
-                      _vm._v(_vm._s(_vm.airport_iata(_vm.airport_from)))
+                _c(
+                  "div",
+                  {
+                    class: [
+                      { grayd: !_vm.airport_to.name || !_vm.airport_from.name }
+                    ]
+                  },
+                  [
+                    _c("div", { staticClass: "airport-upper" }, [
+                      _c("span", [_vm._v("From")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "iata" }, [
+                        _vm._v(_vm._s(_vm.airport_iata(_vm.airport_from)))
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "airport-description" }, [
+                        _vm._v(_vm._s(_vm.airport_city(_vm.airport_from)))
+                      ])
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "airport-description" }, [
-                      _vm._v(_vm._s(_vm.airport_city(_vm.airport_from)))
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "airport-upper" }, [
-                    _c("span", [_vm._v("To")]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "iata" }, [
-                      _vm._v(_vm._s(_vm.airport_iata(_vm.airport_to)))
+                    _c("div", { staticClass: "airport-upper" }, [
+                      _c("span", [_vm._v("To")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "iata" }, [
+                        _vm._v(_vm._s(_vm.airport_iata(_vm.airport_to)))
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "airport-description" }, [
+                        _vm._v(_vm._s(_vm.airport_city(_vm.airport_to)))
+                      ])
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "airport-description" }, [
-                      _vm._v(_vm._s(_vm.airport_city(_vm.airport_to)))
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "fwvdp" }, [
-                    _c(
-                      "div",
-                      { staticClass: "airportpicker" },
-                      [
-                        _c("p", [_vm._v("Depature Airport:")]),
-                        _vm._v(" "),
-                        _c("DropDown", {
-                          attrs: {
-                            inputId: "depature_city",
-                            options: _vm.airports,
-                            disabled: false,
-                            startswith: "true",
-                            placeholder: "Please, start search your airport"
-                          },
-                          on: { selected: _vm.depature_selection }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "airportpicker" },
-                      [
-                        _c("p", [_vm._v("Return Airport:")]),
-                        _vm._v(" "),
-                        _c("DropDown", {
-                          attrs: {
-                            inputId: "return_city",
-                            options: _vm.airports,
-                            disabled: false,
-                            placeholder: "Please, start search your airport"
-                          },
-                          on: { selected: _vm.return_selection }
-                        }),
-                        _vm._v(" "),
-                        _c("p")
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "savebtn-mixer" }, [
+                    _c("div", { staticClass: "fwvdp" }, [
                       _c(
                         "div",
-                        {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value:
-                                _vm.airport_from.iata && _vm.airport_to.iata,
-                              expression: "airport_from.iata && airport_to.iata"
-                            }
-                          ]
-                        },
+                        { staticClass: "airportpicker" },
                         [
-                          _c("div", { staticClass: "savebtn-container" }, [
-                            _c(
-                              "span",
+                          _c("p", [_vm._v("Depature Airport:")]),
+                          _vm._v(" "),
+                          _c("DropDown", {
+                            attrs: {
+                              inputId: "depature_city",
+                              options: _vm.airports,
+                              disabled: false,
+                              startswith: "true",
+                              placeholder: "Please, start search your airport"
+                            },
+                            on: { selected: _vm.depature_selection }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "airportpicker" },
+                        [
+                          _c("p", [_vm._v("Return Airport:")]),
+                          _vm._v(" "),
+                          _c("DropDown", {
+                            attrs: {
+                              inputId: "return_city",
+                              options: _vm.airports,
+                              disabled: false,
+                              placeholder: "Please, start search your airport"
+                            },
+                            on: { selected: _vm.return_selection }
+                          }),
+                          _vm._v(" "),
+                          _c("p")
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "savebtn-mixer" }, [
+                        _c(
+                          "div",
+                          {
+                            directives: [
                               {
-                                on: {
-                                  click: function($event) {
-                                    _vm.show_airports_modal = false
+                                name: "show",
+                                rawName: "v-show",
+                                value:
+                                  _vm.airport_from.iata && _vm.airport_to.iata,
+                                expression:
+                                  "airport_from.iata && airport_to.iata"
+                              }
+                            ]
+                          },
+                          [
+                            _c("div", { staticClass: "savebtn-container" }, [
+                              _c(
+                                "span",
+                                {
+                                  on: {
+                                    click: function($event) {
+                                      _vm.show_airports_modal = false
+                                    }
                                   }
-                                }
-                              },
-                              [_vm._v("Save")]
-                            )
-                          ])
-                        ]
-                      )
+                                },
+                                [_vm._v("Save")]
+                              )
+                            ])
+                          ]
+                        )
+                      ])
                     ])
-                  ])
-                ])
+                  ]
+                )
               ]
             ),
             _vm._v(" "),
