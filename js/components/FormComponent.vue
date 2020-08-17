@@ -1,5 +1,5 @@
 <template>
-  <form id="flights-to-form" action="/admin-ajax.php">
+  <form id="flights-to-form" @submit.prevent="submitform">
     <div class="flights-head-title">Search Flights</div>
     <div class="flights-class-selector">
       <span
@@ -70,7 +70,7 @@
         <div
           id="flights-from-to-switcher"
           @click="shullfie_airports"
-          :class="[{'grayd': !airport_to},{'blued': airport_to}]"
+          :class="[{'grayd': !airport_to.name||!airport_from.name}]"
         ></div>
         <div class="flights-to" @click="show_airports_modal=true">
           <span>To</span>
@@ -177,6 +177,9 @@ export default {
     id: {
       required: true,
     },
+    actionurl: {
+      type: String,
+    },
     adultList: {
       type: Array,
       required: true,
@@ -198,6 +201,9 @@ export default {
   },
   data() {
     return {
+      StartDate: undefined,
+      EndDate: undefined,
+      testEndDate: undefined,
       airport_from: false,
       airport_to: false,
       date_depature: null,
@@ -281,7 +287,18 @@ export default {
     },
     submitform(form) {
       let data = {
+        url: this.actionurl,
+        start: this.airport_from.iata,
+        destination: this.airport_to.iata,
+        startDate: this.date_depature.replace("/", "-"),
+        endDate: this.date_return.replace("/", "-"),
+        classInfo: this.classtype,
+        adult: this.counter_adults,
+        child: this.counter_childs,
+        childrenAges: "",
         email: this.email,
+        name: "udefined",
+        followupMail: "false",
       };
       console.log(data);
     },

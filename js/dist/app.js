@@ -736,6 +736,9 @@ __webpack_require__.r(__webpack_exports__);
     id: {
       required: true
     },
+    actionurl: {
+      type: String
+    },
     adultList: {
       type: Array,
       required: true
@@ -757,6 +760,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      StartDate: undefined,
+      EndDate: undefined,
+      testEndDate: undefined,
       airport_from: false,
       airport_to: false,
       date_depature: null,
@@ -843,7 +849,18 @@ __webpack_require__.r(__webpack_exports__);
     },
     submitform: function submitform(form) {
       var data = {
-        email: this.email
+        url: this.actionurl,
+        start: this.airport_from.iata,
+        destination: this.airport_to.iata,
+        startDate: this.date_depature.replace("/", "-"),
+        endDate: this.date_return.replace("/", "-"),
+        classInfo: this.classtype,
+        adult: this.counter_adults,
+        child: this.counter_childs,
+        childrenAges: "",
+        email: this.email,
+        name: "udefined",
+        followupMail: "false"
       };
       console.log(data);
     }
@@ -1331,6 +1348,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "VueDatepicker",
   directives: {},
@@ -1467,6 +1488,26 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {},
   methods: {
+    vm_date_format: function vm_date_format(date) {
+      if (date) {
+        var date1 = new Date(date);
+        var date2 = date1.toDateString().split(" ").slice(1);
+        return date2[1] + " " + date2[0];
+      }
+
+      return "Date";
+    },
+    vm_day_formatted: function vm_day_formatted(date) {
+      var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+      if (date) {
+        var date1 = new Date(date);
+        var date2 = date1.toDateString().split(" ").slice(1);
+        return days[date1.getDay()] + " " + date2[2];
+      }
+
+      return "day";
+    },
     toggle: function toggle(e) {
       if (e.type === "focus") {
         this.active = true;
@@ -2939,7 +2980,15 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "form",
-    { attrs: { id: "flights-to-form", action: "/admin-ajax.php" } },
+    {
+      attrs: { id: "flights-to-form" },
+      on: {
+        submit: function($event) {
+          $event.preventDefault()
+          return _vm.submitform($event)
+        }
+      }
+    },
     [
       _c("div", { staticClass: "flights-head-title" }, [
         _vm._v("Search Flights")
@@ -3121,7 +3170,9 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("div", {
-              class: [{ grayd: !_vm.airport_to }, { blued: _vm.airport_to }],
+              class: [
+                { grayd: !_vm.airport_to.name || !_vm.airport_from.name }
+              ],
               attrs: { id: "flights-from-to-switcher" },
               on: { click: _vm.shullfie_airports }
             }),
@@ -3536,7 +3587,13 @@ var render = function() {
         _vm._v(" "),
         _vm.selectStartDate
           ? _c("span", { staticClass: "from-date" }, [
-              _vm._v(_vm._s(_vm.displayDateText(_vm.selectStartDate)))
+              _vm._v(_vm._s(_vm.vm_date_format(_vm.selectStartDate)))
+            ])
+          : _c("div", { staticClass: "day_year" }, [_vm._v("Not selected")]),
+        _vm._v(" "),
+        _vm.selectStartDate
+          ? _c("div", { staticClass: "day_year" }, [
+              _vm._v(_vm._s(_vm.vm_day_formatted(_vm.selectStartDate)))
             ])
           : _vm._e()
       ]),
@@ -3546,7 +3603,13 @@ var render = function() {
         _vm._v(" "),
         _vm.selectStartDate
           ? _c("span", { staticClass: "from-date" }, [
-              _vm._v(_vm._s(_vm.displayDateText(_vm.selectEndDate)))
+              _vm._v(_vm._s(_vm.vm_date_format(_vm.selectEndDate)))
+            ])
+          : _c("div", { staticClass: "day_year" }, [_vm._v("Not selected")]),
+        _vm._v(" "),
+        _vm.selectStartDate
+          ? _c("div", { staticClass: "day_year" }, [
+              _vm._v(_vm._s(_vm.vm_day_formatted(_vm.selectEndDate)))
             ])
           : _vm._e()
       ]),

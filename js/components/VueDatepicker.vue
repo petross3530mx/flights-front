@@ -2,11 +2,15 @@
   <div :class="mobile.toLowerCase()" class="vhd-container">
     <div class="flghts-upblock">
       <div class="from-text">{{ fromText }}</div>
-      <span v-if="selectStartDate" class="from-date">{{ displayDateText(selectStartDate) }}</span>
+      <span v-if="selectStartDate" class="from-date">{{ vm_date_format(selectStartDate) }}</span>
+      <div v-else class="day_year">Not selected</div>
+      <div v-if="selectStartDate" class="day_year">{{vm_day_formatted(selectStartDate)}}</div>
     </div>
     <div class="flghts-upblock">
       <div class="from-text">{{ toText }}</div>
-      <span v-if="selectStartDate" class="from-date">{{ displayDateText(selectEndDate) }}</span>
+      <span v-if="selectStartDate" class="from-date">{{ vm_date_format(selectEndDate) }}</span>
+      <div v-else class="day_year">Not selected</div>
+      <div v-if="selectStartDate" class="day_year">{{vm_day_formatted(selectEndDate)}}</div>
     </div>
 
     <div class="fwvdp">
@@ -273,6 +277,31 @@ export default {
   },
   mounted() {},
   methods: {
+    vm_date_format(date) {
+      if (date) {
+        let date1 = new Date(date);
+        let date2 = date1.toDateString().split(" ").slice(1);
+        return date2[1] + " " + date2[0];
+      }
+      return "Date";
+    },
+    vm_day_formatted(date) {
+      let days = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ];
+      if (date) {
+        let date1 = new Date(date);
+        let date2 = date1.toDateString().split(" ").slice(1);
+        return days[date1.getDay()] + " " + date2[2];
+      }
+      return "day";
+    },
     toggle(e) {
       if (e.type === "focus") {
         this.active = true;
