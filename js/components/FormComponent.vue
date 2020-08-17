@@ -166,9 +166,20 @@
         <input id="submitbtn" type="submit" class="submit" value="Search flight" />
       </div>
     </div>
+    <div class="modal-block" :class="{'modal-show':modal_show}">
+      <div class="popup">
+        <div class="congrats-title">Thank you for your request!</div>
+        <p>
+          We will send you a mail in the next 2-3 minutes. Please check your
+          mailbox.
+        </p>
+        <div class="okbtn" @click="modal_show=false">Ok</div>
+      </div>
+    </div>
   </form>
 </template>
 <script>
+import axios from "axios";
 import Scroller from "../components/Scroller";
 import VueDatepicker from "../components/VueDatepicker";
 import DropDown from "../components/DropDown";
@@ -201,6 +212,7 @@ export default {
   },
   data() {
     return {
+      modal_show: false,
       StartDate: undefined,
       EndDate: undefined,
       testEndDate: undefined,
@@ -287,20 +299,29 @@ export default {
     },
     submitform(form) {
       let data = {
-        url: this.actionurl,
         start: this.airport_from.iata,
         destination: this.airport_to.iata,
-        startDate: this.date_depature.replace("/", "-"),
-        endDate: this.date_return.replace("/", "-"),
+        startDate: this.date_depature.replace(/\//g, "-"),
+        endDate: this.date_return.replace(/\//g, "-"),
         classInfo: this.classtype,
         adult: this.counter_adults,
         child: this.counter_childs,
         childrenAges: "",
         email: this.email,
-        name: "udefined",
+        name: "undefined",
         followupMail: "false",
       };
+      data.payload =
+        data.start +
+        data.destination +
+        data.startDate +
+        data.endDate +
+        data.classInfo +
+        data.adult +
+        data.child;
+      this.modal_show = true;
       console.log(data);
+      axios.post(this.actionurl, data);
     },
   },
   computed: {},
