@@ -12,14 +12,14 @@
     </div>
     <div class="flights-to-dashboard flights-search-field disable-select">
       <div class="from-to-switch">
-        <div :class="{'modal-show':show_airports_modal}" class="flights-modal">
+        <div :class="[{'modal-show':show_airports_modal}]" class="flights-modal">
           <div>
-            <div class="airport-upper">
+            <div class="airport-upper" :class="{'not-selected':!airport_from.iata}">
               <span>From</span>
               <div class="iata">{{airport_iata(airport_from)}}</div>
               <div class="airport-description">{{airport_city(airport_from)}}</div>
             </div>
-            <div class="airport-upper">
+            <div class="airport-upper" :class="{'not-selected':!airport_to.iata}">
               <span>To</span>
               <div class="iata">{{airport_iata(airport_to)}}</div>
               <div class="airport-description">{{airport_city(airport_to)}}</div>
@@ -299,13 +299,14 @@ export default {
     },
     submitform(form) {
       let data = {
+        action: "pao_flights_to_post_generation",
         start: this.airport_from.iata,
         destination: this.airport_to.iata,
         startDate: this.date_depature.replace(/\//g, "-"),
         endDate: this.date_return.replace(/\//g, "-"),
         classInfo: this.classtype,
         adult: this.counter_adults,
-        child: this.counter_childs,
+        senior: this.counter_childs,
         childrenAges: "",
         email: this.email,
         name: "undefined",

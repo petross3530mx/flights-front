@@ -1,4 +1,4 @@
-@media (min-width: 361px) {
+@media (min-width: 421px) {
   section.flights-to .flights-search-field {
     width: 400px;
     margin: auto;
@@ -78,7 +78,7 @@
   }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 420px) {
   section.flights-to:after {
     content: "";
     background: #fff;
@@ -92,5 +92,45 @@
     padding-top: 52px;
     z-index: 1;
     position: relative;
+  }
+  .flights-to-dashboard.flights-search-field.disable-select
+    > div.from-to-switch
+    > div.flights-modal
+    > div {
+    max-width: 90vw;
+  }
+  section.flights-to .depature-return .flights-modal > div {
+    max-width: 90vw;
+  }
+}
+
+@media (max-width: 340px) {
+  .vhd-calendar-header {
+    display: none;
+  }
+  .vhd-calendar .calendar-date .week {
+    height: 28px !important;
+  }
+  .vhd-calendar .calendar-date .week .day {
+    height: 26px !important;
+    width: calc(96% / 7) !important;
+  }
+  vhd-calendar .calendar-week {
+    width: 100% !important;
+  }
+  .vhd-calendar .calendar-week-item {
+    width: calc(96% / 7) !important;
+  }
+  .vhd-calendar-left,
+  .vhd-calendar-right {
+    width: 100% !important;
+  }
+  section.flights-to
+    .depature-return
+    .flights-modal
+    > div
+    .vhd-container
+    > div {
+    padding: 6px 14px;
   }
 }

@@ -1,23 +1,8 @@
 let flightsheader = document.querySelector("header.flights-to");
 let flightsheader_burger = flightsheader.querySelector(".burger-container");
 
-flightsheader_burger.addEventListener("click", function() {
+flightsheader.addEventListener("click", function() {
   flightsheader.classList.toggle("open");
-});
-
-let flightsmain = document.querySelector("section.flights-to");
-
-let flightsto_form = flightsmain.querySelector("#flights-to-form");
-
-flightsto_form.addEventListener("submit", function(e) {
-  e.preventDefault();
-  let object = {};
-  let formData = new FormData(this);
-  formData.forEach(function(value, key) {
-    object[key] = value;
-  });
-  console.log(object);
-  flightsmain.classList.toggle("modal-show");
 });
 
 import Vue from "vue";

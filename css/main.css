@@ -39,7 +39,7 @@ section.flights-to:after {
 header.flights-to {
   position: absolute;
   text-align: center;
-  z-index: 1000;
+  z-index: 1;
   width: 100%;
   transition: all 0.5s ease;
 }
@@ -1061,4 +1061,7 @@ input#return_city {
   overflow: scroll;
   overflow-x: scroll;
   overflow-x: visible;
+}
+.not-selected .iata {
+  color: #76767657 !important;
 }

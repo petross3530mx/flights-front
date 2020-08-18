@@ -2676,13 +2676,14 @@ __webpack_require__.r(__webpack_exports__);
     },
     submitform: function submitform(form) {
       var data = {
+        action: "pao_flights_to_post_generation",
         start: this.airport_from.iata,
         destination: this.airport_to.iata,
         startDate: this.date_depature.replace(/\//g, "-"),
         endDate: this.date_return.replace(/\//g, "-"),
         classInfo: this.classtype,
         adult: this.counter_adults,
-        child: this.counter_childs,
+        senior: this.counter_childs,
         childrenAges: "",
         email: this.email,
         name: "undefined",
@@ -4857,33 +4858,47 @@ var render = function() {
               "div",
               {
                 staticClass: "flights-modal",
-                class: { "modal-show": _vm.show_airports_modal }
+                class: [{ "modal-show": _vm.show_airports_modal }]
               },
               [
                 _c("div", [
-                  _c("div", { staticClass: "airport-upper" }, [
-                    _c("span", [_vm._v("From")]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "iata" }, [
-                      _vm._v(_vm._s(_vm.airport_iata(_vm.airport_from)))
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "airport-description" }, [
-                      _vm._v(_vm._s(_vm.airport_city(_vm.airport_from)))
-                    ])
-                  ]),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "airport-upper",
+                      class: { "not-selected": !_vm.airport_from.iata }
+                    },
+                    [
+                      _c("span", [_vm._v("From")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "iata" }, [
+                        _vm._v(_vm._s(_vm.airport_iata(_vm.airport_from)))
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "airport-description" }, [
+                        _vm._v(_vm._s(_vm.airport_city(_vm.airport_from)))
+                      ])
+                    ]
+                  ),
                   _vm._v(" "),
-                  _c("div", { staticClass: "airport-upper" }, [
-                    _c("span", [_vm._v("To")]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "iata" }, [
-                      _vm._v(_vm._s(_vm.airport_iata(_vm.airport_to)))
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "airport-description" }, [
-                      _vm._v(_vm._s(_vm.airport_city(_vm.airport_to)))
-                    ])
-                  ]),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "airport-upper",
+                      class: { "not-selected": !_vm.airport_to.iata }
+                    },
+                    [
+                      _c("span", [_vm._v("To")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "iata" }, [
+                        _vm._v(_vm._s(_vm.airport_iata(_vm.airport_to)))
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "airport-description" }, [
+                        _vm._v(_vm._s(_vm.airport_city(_vm.airport_to)))
+                      ])
+                    ]
+                  ),
                   _vm._v(" "),
                   _c("div", { staticClass: "fwvdp" }, [
                     _c(
@@ -17880,20 +17895,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 var flightsheader = document.querySelector("header.flights-to");
 var flightsheader_burger = flightsheader.querySelector(".burger-container");
-flightsheader_burger.addEventListener("click", function () {
+flightsheader.addEventListener("click", function () {
   flightsheader.classList.toggle("open");
-});
-var flightsmain = document.querySelector("section.flights-to");
-var flightsto_form = flightsmain.querySelector("#flights-to-form");
-flightsto_form.addEventListener("submit", function (e) {
-  e.preventDefault();
-  var object = {};
-  var formData = new FormData(this);
-  formData.forEach(function (value, key) {
-    object[key] = value;
-  });
-  console.log(object);
-  flightsmain.classList.toggle("modal-show");
 });
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.config.devtools = true;
