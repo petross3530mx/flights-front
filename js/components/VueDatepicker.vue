@@ -25,11 +25,6 @@
       />
       <div class="vhd-picker">
         <div class="vhd-calendar">
-          <div class="vhd-calendar-header">
-            <a class="close" @click="close">
-              <div class="arrow arrow-close" style="width:24px; height:24px"></div>
-            </a>
-          </div>
           <div class="vhd-calendar-left">
             <div class="calendar-month">
               <a
@@ -607,6 +602,7 @@ export default {
 <style >
 .fwvdp {
   grid-column: -1/1;
+  border: none !important;
 }
 * {
   box-sizing: border-box;
@@ -624,9 +620,6 @@ svg {
 .vhd-container.mobile .vhd-picker {
   width: 300px;
   padding: 8px;
-}
-.vhd-container.mobile .vhd-calendar-header {
-  height: 60px;
 }
 
 .vhd-container.mobile .vhd-calendar-left {
@@ -689,22 +682,9 @@ svg {
   padding: 24px;
   background-color: #fff;
   border-radius: 6px;
-  box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.27);
   overflow: hidden;
 }
-.vhd-calendar-header {
-  position: relative;
-  width: 100%;
-  height: 36px;
-}
 
-.vhd-calendar-header > a.close {
-  position: absolute;
-  right: 0;
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-}
 .vhd-calendar-footer {
   position: relative;
   width: 100%;
