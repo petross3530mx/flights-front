@@ -604,10 +604,7 @@ export default {
   grid-column: -1/1;
   border: none !important;
 }
-* {
-  box-sizing: border-box;
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-}
+
 svg {
   fill: #7d7d7d;
 }
