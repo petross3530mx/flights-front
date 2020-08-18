@@ -1039,6 +1039,8 @@ input#return_city {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+  outline-color: #4435d9;
+  outline-width: 1px;
 }
 .airportpicker .dropdown-item {
   background: #fff;
