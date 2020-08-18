@@ -604,7 +604,10 @@ export default {
   grid-column: -1/1;
   border: none !important;
 }
-
+* {
+  box-sizing: border-box;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+}
 svg {
   fill: #7d7d7d;
 }
@@ -680,6 +683,7 @@ svg {
   background-color: #fff;
   border-radius: 6px;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .vhd-calendar-footer {
