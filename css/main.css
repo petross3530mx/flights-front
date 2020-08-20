@@ -237,6 +237,7 @@ section.flights-to .from-to-switch > div:last-child .flights-detail:before {
 }
 section.flights-to .from-to-switch .airport-upper {
   text-align: left;
+  cursor: pointer;
 }
 section.flights-to .from-to-switch .airport-upper span {
   font-weight: 500;
@@ -252,7 +253,7 @@ section.flights-to .from-to-switch .airport-upper .iata {
   color: #4435d9;
 }
 section.flights-to .from-to-switch .airport-upper .airport-description {
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: -0.11917px;
   color: #808080;
   font-weight: bold;
@@ -278,6 +279,9 @@ section.flights-to .depature-return > div > div,
 section.flights-to .passengers > div > div {
   color: #4435d9;
   cursor: pointer;
+}
+section.flights-to .passengers .modal-passengers > div {
+  padding: 24px;
 }
 div .passengers .passengers-title,
 section.flights-to .depature-return > div .date_formatted {
@@ -337,14 +341,15 @@ input#terms {
   position: relative;
   vertical-align: middle;
   cursor: pointer;
-  margin-right: 5px;
+  margin-right: 12px;
+  margin-top: -4px;
 }
 #terms:checked + #termslabel:after {
   content: "";
   display: block;
   position: absolute;
-  top: 2px;
-  left: 9px;
+  top: 0px;
+  left: 8px;
   width: 6px;
   height: 14px;
   border: solid #4435d9;
@@ -353,7 +358,7 @@ input#terms {
 }
 section.flights-to .email_plus_terms {
   margin: 10px;
-  text-align: left;
+  text-align: center;
 }
 section.flights-to .email_plus_terms > span {
   display: block;
@@ -506,7 +511,7 @@ section.flights-to .modal-passengers .passengers-modal-title {
   text-align: center;
   flex: 0 0 100%;
   color: #2a2a2a;
-  margin-bottom: -16px;
+  margin-bottom: -8px;
 }
 section.flights-to .passengers .modal-passengers .iconhead {
   content: "";
@@ -515,6 +520,9 @@ section.flights-to .passengers .modal-passengers .iconhead {
   width: 20px;
   height: 20px;
   margin: 10px auto;
+}
+section.flights-to .passengers .modal-passengers .child_passengers .iconhead {
+  background: url(../img/child.svg) no-repeat center;
 }
 section.flights-to .passengers .modal-passengers .savebtn-container {
   flex: 0 0 100%;
@@ -527,13 +535,7 @@ section.flights-to .passengers .modal-passengers .savebtn-container span {
   padding: 4px 20px;
   margin-right: 20px;
 }
-section.flights-to
-  .passengers
-  .modal-passengers
-  .vscroller:last-child
-  .iconhead {
-  background: url(../img/child.svg) no-repeat center;
-}
+
 section.flights-to .depature-return .flights-modal > div {
   margin: 10px auto;
   height: calc(90vh - 20px);
@@ -587,7 +589,7 @@ html::-webkit-scrollbar {
 }
 .vscroller {
   font-family: arial, verdana, sans-serif;
-  padding: 0.5em 0.25em;
+  padding: 0;
   min-width: 40px;
   max-width: 100%;
   -webkit-box-flex: 1;
@@ -609,10 +611,12 @@ html::-webkit-scrollbar {
 }
 .vscroller__body {
   height: 200px;
+  margin-top: 16px;
   overflow: hidden;
   position: relative;
 }
-.vscroller__body:before {
+.vscroller__body:before,
+.vscroller__body:after {
   content: "";
   position: absolute;
   left: 0;
@@ -621,22 +625,16 @@ html::-webkit-scrollbar {
   right: auto;
   height: 1px;
   width: 100%;
+  opacity: 12%;
   background-color: #b6b7ba;
   display: block;
   z-index: 1;
 }
 .vscroller__body:after {
-  content: "";
-  position: absolute;
   left: 0;
   bottom: 80px;
   right: auto;
   top: auto;
-  height: 1px;
-  width: 100%;
-  background-color: #b6b7ba;
-  display: block;
-  z-index: 1;
 }
 .vscroller__body ul {
   display: block;
@@ -661,9 +659,17 @@ html::-webkit-scrollbar {
   position: relative;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 24px;
 }
 .vscroller__body li.vselected {
   font-weight: 700;
+  font-size: 32px;
+  opacity: 1;
+}
+
+.vscroller__body li {
+  opacity: 0.6;
+  transition: all 0.5s ease;
 }
 section.flights-to .flights-from > div.grayd,
 section.flights-to .flights-to > div.grayd {
@@ -706,7 +712,9 @@ section.flights-to .flights-to > div.grayd {
   padding: 8px 22px;
   text-align: left;
   background: #fff;
-  border-radius: 4px;
+  border: 1px solid #7367f0;
+  box-sizing: border-box;
+  border-radius: 5px;
 }
 .airportpicker {
   padding: 4px;
@@ -1032,8 +1040,8 @@ div.row-top.grided-with-line
   text-align: right;
   color: rgba(42, 42, 42, 0.6);
 }
-input#depature_city,
-input#return_city {
+input#to,
+input#from {
   padding: 10px;
   width: 100%;
   border: 1px solid #ccc;
@@ -1041,6 +1049,7 @@ input#return_city {
   box-sizing: border-box;
   outline-color: #354ad952;
   outline-width: 1px;
+  color: #757575;
 }
 .airportpicker .dropdown-item {
   background: #fff;
@@ -1048,6 +1057,17 @@ input#return_city {
   color: #4435d9;
   border-bottom: 1px solid #ccc;
   font-size: 12px;
+}
+.airportpicker .dropdown-item.item_selected {
+  font-weight: bold;
+}
+.airportpicker p > span {
+  opacity: 1;
+  color: #4435d9;
+  transition: all 0.5s ease;
+}
+.airportpicker p > span.not-selected {
+  opacity: 0;
 }
 .from-to-switch .savebtn-container {
   text-align: center;
@@ -1062,11 +1082,19 @@ input#return_city {
   cursor: pointer;
 }
 .dropdown-content {
-  max-height: 40vh;
+  height: 40vh;
   overflow: scroll;
   overflow-x: scroll;
   overflow-x: visible;
+  transition: all 0.5s ease;
+}
+.not_shown.dropdown-content {
+  height: 0;
 }
 .not-selected .iata {
   color: #76767657 !important;
+}
+
+.airportpicker .dropdown {
+  cursor: pointer;
 }

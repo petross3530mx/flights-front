@@ -8,9 +8,9 @@
     </div>
     <div class="flghts-upblock">
       <div class="from-text">{{ toText }}</div>
-      <span v-if="selectStartDate" class="from-date">{{ vm_date_format(selectEndDate) }}</span>
+      <span v-if="selectEndDate" class="from-date">{{ vm_date_format(selectEndDate) }}</span>
       <div v-else class="day_year">Not selected</div>
-      <div v-if="selectStartDate" class="day_year">{{vm_day_formatted(selectEndDate)}}</div>
+      <div v-if="selectEndDate" class="day_year">{{vm_day_formatted(selectEndDate)}}</div>
     </div>
 
     <div class="fwvdp">

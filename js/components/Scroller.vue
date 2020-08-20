@@ -1,5 +1,5 @@
 <template>
-  <div class="vscroller">
+  <div class="vscroller" :class="input_name">
     <div class="iconhead"></div>
     <div class="vscroller__head">{{scrollerTitle}}</div>
     <div class="vscroller__head_desc">{{scrollerDescription}}</div>

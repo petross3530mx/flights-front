@@ -14,33 +14,52 @@
       <div class="from-to-switch">
         <div :class="[{'modal-show':show_airports_modal}]" class="flights-modal">
           <div>
-            <div class="airport-upper" :class="{'not-selected':!airport_from.iata}">
+            <div
+              @click="airports_modal('from')"
+              class="airport-upper"
+              :class="{'not-selected':!airport_from.iata}"
+            >
               <span>From</span>
               <div class="iata">{{airport_iata(airport_from)}}</div>
               <div class="airport-description">{{airport_city(airport_from)}}</div>
             </div>
-            <div class="airport-upper" :class="{'not-selected':!airport_to.iata}">
+            <div
+              @click="airports_modal('to')"
+              class="airport-upper"
+              :class="{'not-selected':!airport_to.iata}"
+            >
               <span>To</span>
               <div class="iata">{{airport_iata(airport_to)}}</div>
               <div class="airport-description">{{airport_city(airport_to)}}</div>
             </div>
             <div class="fwvdp">
               <div class="airportpicker">
-                <p>Depature Airport:</p>
+                <p>
+                  Depature Airport:
+                  <span
+                    :class="{'not-selected':!airport_from.iata}"
+                  >{{airport_iata(airport_from)}}</span>
+                </p>
                 <DropDown
-                  inputId="depature_city"
+                  actionname="display_airports_from"
+                  inputId="from"
                   :options="airports"
                   v-on:selected="depature_selection"
                   :disabled="false"
-                  startswith="true"
                   placeholder="Please, start search your airport"
                 />
               </div>
               <div class="airportpicker">
-                <p>Return Airport:</p>
+                <p>
+                  Return Airport:
+                  <span
+                    :class="{'not-selected':!airport_to.iata}"
+                  >{{airport_iata(airport_to)}}</span>
+                </p>
                 <DropDown
-                  inputId="return_city"
-                  :options="airports"
+                  actionname="display_airports_to"
+                  inputId="to"
+                  :options="airportsto"
                   v-on:selected="return_selection"
                   :disabled="false"
                   placeholder="Please, start search your airport"
@@ -57,7 +76,7 @@
             </div>
           </div>
         </div>
-        <div class="flights-from" @click="show_airports_modal=true">
+        <div class="flights-from" @click="airports_modal('from')">
           <span>From</span>
           <div
             id="flights-from-id"
@@ -72,7 +91,7 @@
           @click="shullfie_airports"
           :class="[{'grayd': !airport_to.name||!airport_from.name}]"
         ></div>
-        <div class="flights-to" @click="show_airports_modal=true">
+        <div class="flights-to" @click="airports_modal('to')">
           <span>To</span>
           <div id="flights-to-id" :class="[{'grayd': !airport_to.iata},{'blued': airport_to.iata}]">
             <div class="letter_id">{{airport_iata(airport_to)}}</div>
@@ -155,7 +174,7 @@
       <div class="email_plus_terms">
         <span>E-mail</span>
         <div class="d-flx">
-          <input type="email" name="email" v-model="email" class="form-email" />
+          <input type="email" name="email" v-model="email" class="form-email" required />
         </div>
 
         <p>Deine Ergebnisse sind in unter 5 Min. da.</p>
@@ -227,6 +246,7 @@ export default {
       show_date_modal: false,
       classtype: this.classes[0].slug,
       email: this.defaultemail,
+      airportsto: this.airports,
     };
   },
   components: {
@@ -235,6 +255,10 @@ export default {
     DropDown,
   },
   methods: {
+    airports_modal(param) {
+      this.$emit("show_airports_modal", param);
+      this.show_airports_modal = true;
+    },
     depature_selection(e) {
       this.airport_from = { city: e.name, iata: e.iata };
     },
@@ -251,7 +275,7 @@ export default {
       if (airport.city) {
         return airport.city;
       }
-      return "CITY";
+      return "Not selected";
     },
     date_formatted(date) {
       if (date) {
