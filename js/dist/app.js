@@ -2329,10 +2329,15 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       return placeholder;
     },
     setActive: function setActive(e) {
+      var _this = this;
+
       if (e == this.inputId) {
-        console.log(e);
-        this.$refs.input.focus();
-        this.optionsShown = true; //this.$emit("disable_other_options");
+        setTimeout(function () {
+          _this.$refs.input.focus();
+
+          _this.optionsShown = true;
+          console.log(e + " set active");
+        }, 500); //this.$emit("disable_other_options");
       }
     },
     selectOption: function selectOption(option) {
@@ -2597,6 +2602,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2630,6 +2642,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      email_is_valid: true,
+      email_valid_msg: "Email is not valid",
       modal_show: false,
       StartDate: undefined,
       EndDate: undefined,
@@ -2654,6 +2668,17 @@ __webpack_require__.r(__webpack_exports__);
     DropDown: _components_DropDown__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   methods: {
+    email_check: function email_check() {
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+      if (re.test(String(this.email).toLowerCase())) {
+        this.email_is_valid = true;
+        return true;
+      } else {
+        this.email_is_valid = false;
+        return false;
+      }
+    },
     airports_modal: function airports_modal(param) {
       this.$emit("show_airports_modal", param);
       this.show_airports_modal = true;
@@ -2663,12 +2688,20 @@ __webpack_require__.r(__webpack_exports__);
         city: e.name,
         iata: e.iata
       };
+
+      if (!this.airport_to.iata) {
+        this.airports_modal("to");
+      }
     },
     return_selection: function return_selection(e) {
       this.airport_to = {
         city: e.name,
         iata: e.iata
       };
+
+      if (!this.airport_from.iata) {
+        this.airports_modal("from");
+      }
     },
     airport_iata: function airport_iata(airport) {
       if (airport.iata) {
@@ -2727,27 +2760,51 @@ __webpack_require__.r(__webpack_exports__);
       this.classtype = slug;
     },
     submitform: function submitform(form) {
-      var data = {
-        action: "pao_flights_to_post_generation",
-        start: this.airport_from.iata,
-        destination: this.airport_to.iata,
-        startDate: this.date_depature.replace(/\//g, "-"),
-        endDate: this.date_return.replace(/\//g, "-"),
-        classInfo: this.classtype,
-        adult: this.counter_adults,
-        senior: this.counter_childs,
-        childrenAges: "",
-        email: this.email,
-        name: "undefined",
-        followupMail: "false"
-      };
-      data.payload = data.start + data.destination + data.startDate + data.endDate + data.classInfo + data.adult + data.child;
-      this.modal_show = true;
-      console.log(data);
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(this.actionurl, data);
+      if (!this.form_is_valid) {
+        console.log("form not valid");
+        this.modal_show = true;
+      } else {
+        var data = {
+          action: "pao_flights_to_post_generation",
+          start: this.airport_from.iata,
+          destination: this.airport_to.iata,
+          startDate: this.date_depature.replace(/\//g, "-"),
+          endDate: this.date_return.replace(/\//g, "-"),
+          classInfo: this.classtype,
+          adult: this.counter_adults,
+          senior: this.counter_childs,
+          childrenAges: "",
+          email: this.email,
+          name: "undefined",
+          followupMail: "false"
+        };
+        data.payload = data.start + data.destination + data.startDate + data.endDate + data.classInfo + data.adult + data.child;
+        this.modal_show = true;
+        console.log(data);
+        axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(this.actionurl, data);
+      }
     }
   },
-  computed: {}
+  computed: {
+    form_is_valid: function form_is_valid() {
+      return this.email_check() && this.airport_to.iata && this.airport_from.iata && this.date_depature && this.date_return;
+    },
+    popup_message: function popup_message() {
+      if (this.form_is_valid) {
+        return {
+          "class": "popup-success",
+          title: "Thank you for your request!",
+          message: "We will send you a mail in the next 2-3 minutes. Please check your mailbox."
+        };
+      } else {
+        return {
+          "class": "class-popup-error",
+          title: "Please, check your data",
+          message: "One or more fields not entered propertly, please, check"
+        };
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -4764,68 +4821,75 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _vm.options
-    ? _c("div", { staticClass: "dropdown" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.searchFilter,
-              expression: "searchFilter"
-            }
-          ],
-          ref: "input",
-          staticClass: "dropdown-input",
-          attrs: {
-            id: _vm.inputId,
-            autocomplete: "off",
-            name: _vm.name,
-            disabled: _vm.disabled,
-            placeholder: _vm.getplaceholder(_vm.placeholder)
-          },
-          domProps: { value: _vm.searchFilter },
-          on: {
-            focus: function($event) {
-              return _vm.showOptions()
-            },
-            blur: function($event) {
-              return _vm.exit()
-            },
-            keyup: _vm.keyMonitor,
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.searchFilter = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "dropdown-content",
-            class: { not_shown: !_vm.optionsShown }
-          },
-          _vm._l(_vm.filteredOptions, function(option, index) {
-            return _c(
-              "div",
+    ? _c(
+        "div",
+        {
+          staticClass: "dropdown",
+          class: { show_container: _vm.optionsShown }
+        },
+        [
+          _c("input", {
+            directives: [
               {
-                key: index,
-                staticClass: "dropdown-item",
-                class: { item_selected: _vm.selected.iata == option.iata },
-                on: {
-                  mousedown: function($event) {
-                    return _vm.selectOption(option)
-                  }
-                }
+                name: "model",
+                rawName: "v-model",
+                value: _vm.searchFilter,
+                expression: "searchFilter"
+              }
+            ],
+            ref: "input",
+            staticClass: "dropdown-input",
+            attrs: {
+              id: _vm.inputId,
+              autocomplete: "off",
+              name: _vm.name,
+              disabled: _vm.disabled,
+              placeholder: _vm.getplaceholder(_vm.placeholder)
+            },
+            domProps: { value: _vm.searchFilter },
+            on: {
+              focus: function($event) {
+                return _vm.showOptions()
               },
-              [_vm._v(_vm._s(option.name || option.iata || "-"))]
-            )
+              blur: function($event) {
+                return _vm.exit()
+              },
+              keyup: _vm.keyMonitor,
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.searchFilter = $event.target.value
+              }
+            }
           }),
-          0
-        )
-      ])
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "dropdown-content",
+              class: { not_shown: !_vm.optionsShown }
+            },
+            _vm._l(_vm.filteredOptions, function(option, index) {
+              return _c(
+                "div",
+                {
+                  key: index,
+                  staticClass: "dropdown-item",
+                  class: { item_selected: _vm.selected.iata == option.iata },
+                  on: {
+                    mousedown: function($event) {
+                      return _vm.selectOption(option)
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(option.name || option.iata || "-"))]
+              )
+            }),
+            0
+          )
+        ]
+      )
     : _vm._e()
 }
 var staticRenderFns = []
@@ -4957,7 +5021,19 @@ var render = function() {
                       "div",
                       { staticClass: "airportpicker" },
                       [
+                        _c("DropDown", {
+                          attrs: {
+                            actionname: "display_airports_from",
+                            inputId: "from",
+                            options: _vm.airports,
+                            disabled: false,
+                            placeholder: "Please, start search your airport"
+                          },
+                          on: { selected: _vm.depature_selection }
+                        }),
+                        _vm._v(" "),
                         _c("p", [
+                          _c("b", [_vm._v("Select")]),
                           _vm._v(
                             "\n                Depature Airport:\n                "
                           ),
@@ -4968,18 +5044,7 @@ var render = function() {
                             },
                             [_vm._v(_vm._s(_vm.airport_iata(_vm.airport_from)))]
                           )
-                        ]),
-                        _vm._v(" "),
-                        _c("DropDown", {
-                          attrs: {
-                            actionname: "display_airports_from",
-                            inputId: "from",
-                            options: _vm.airports,
-                            disabled: false,
-                            placeholder: "Please, start search your airport"
-                          },
-                          on: { selected: _vm.depature_selection }
-                        })
+                        ])
                       ],
                       1
                     ),
@@ -4988,17 +5053,6 @@ var render = function() {
                       "div",
                       { staticClass: "airportpicker" },
                       [
-                        _c("p", [
-                          _vm._v(
-                            "\n                Return Airport:\n                "
-                          ),
-                          _c(
-                            "span",
-                            { class: { "not-selected": !_vm.airport_to.iata } },
-                            [_vm._v(_vm._s(_vm.airport_iata(_vm.airport_to)))]
-                          )
-                        ]),
-                        _vm._v(" "),
                         _c("DropDown", {
                           attrs: {
                             actionname: "display_airports_to",
@@ -5010,7 +5064,17 @@ var render = function() {
                           on: { selected: _vm.return_selection }
                         }),
                         _vm._v(" "),
-                        _c("p")
+                        _c("p", [
+                          _c("b", [_vm._v("Select")]),
+                          _vm._v(
+                            "\n                Return Airport:\n                "
+                          ),
+                          _c(
+                            "span",
+                            { class: { "not-selected": !_vm.airport_to.iata } },
+                            [_vm._v(_vm._s(_vm.airport_iata(_vm.airport_to)))]
+                          )
+                        ])
                       ],
                       1
                     ),
@@ -5396,18 +5460,28 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-email",
+                class: { error: !_vm.email_is_valid },
                 attrs: { type: "email", name: "email", required: "" },
                 domProps: { value: _vm.email },
                 on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.email = $event.target.value
-                  }
+                  input: [
+                    function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.email = $event.target.value
+                    },
+                    _vm.email_check
+                  ]
                 }
               })
             ]),
+            _vm._v(" "),
+            !_vm.email_is_valid
+              ? _c("div", { staticClass: "email-validator-error" }, [
+                  _vm._v(_vm._s(_vm.email_valid_msg))
+                ])
+              : _vm._e(),
             _vm._v(" "),
             _c("p", [_vm._v("Deine Ergebnisse sind in unter 5 Min. da.")]),
             _vm._v(" "),
@@ -5426,16 +5500,14 @@ var render = function() {
         "div",
         { staticClass: "modal-block", class: { "modal-show": _vm.modal_show } },
         [
-          _c("div", { staticClass: "popup" }, [
-            _c("div", { staticClass: "congrats-title" }, [
-              _vm._v("Thank you for your request!")
-            ]),
+          _c("div", { staticClass: "popup", class: _vm.popup_message.class }, [
+            _c(
+              "div",
+              { staticClass: "congrats-title", class: _vm.popup_message.class },
+              [_vm._v(_vm._s(_vm.popup_message.title))]
+            ),
             _vm._v(" "),
-            _c("p", [
-              _vm._v(
-                "\n        We will send you a mail in the next 2-3 minutes. Please check your\n        mailbox.\n      "
-              )
-            ]),
+            _c("p", [_vm._v(_vm._s(_vm.popup_message.message))]),
             _vm._v(" "),
             _c(
               "div",

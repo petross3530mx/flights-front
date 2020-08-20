@@ -28,6 +28,8 @@
 
   section.flights-to .flights-to .flights-detail {
     float: right;
+    margin-left: 0 !important;
+    margin-right: 0px;
   }
   section.flights-to .depature-return,
   section.flights-to .from-to-switch,
@@ -101,6 +103,14 @@
   }
   section.flights-to .depature-return .flights-modal > div {
     max-width: 90vw;
+  }
+  section.flights-to .from-to-switch > div:last-child .flights-detail:before {
+    float: left;
+    left: -2px;
+    top: 1px;
+  }
+  section.flights-to .from-to-switch .flights-to .flights-detail {
+    margin-left: 0;
   }
 }
 

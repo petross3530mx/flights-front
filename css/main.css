@@ -226,20 +226,21 @@ section.flights-to .from-to-switch .flights-detail {
   font-style: normal;
   font-weight: 500;
   font-size: 13px;
-  max-width: 110px;
+
   position: relative;
-  margin-left: 20px;
+  margin-left: 0px;
 }
 .blued {
   color: #4435d9;
 }
 section.flights-to .from-to-switch .flights-detail:before {
   content: "";
-  position: absolute;
+  position: relative;
   display: inline-block;
   width: 16px;
   height: 16px;
-  left: -22px;
+  left: -2px;
+  top: 2px;
   padding: 1px;
   background: url(../img/from.svg);
 }
@@ -249,6 +250,11 @@ section.flights-to .from-to-switch .flights-detail:before {
 }
 section.flights-to .from-to-switch > div:last-child .flights-detail:before {
   background: url(../img/to.svg);
+  left: auto;
+  float: right;
+  right: -2px;
+  top: 1px;
+  margin-top: -3px;
 }
 section.flights-to .from-to-switch .airport-upper {
   text-align: left;
@@ -357,7 +363,7 @@ input#terms {
   vertical-align: middle;
   cursor: pointer;
   margin-right: 12px;
-  margin-top: -4px;
+  margin-top: 0px;
 }
 #terms:checked + #termslabel:after {
   content: "";
@@ -443,6 +449,7 @@ section.flights-to .submitcontainer input.submit {
   margin: 20px 0 20px 0;
   border-radius: 21px;
   cursor: pointer;
+  outline: none;
 }
 .flights-to-dashboard.flights-search-field.disable-select
   > div.from-to-switch
@@ -491,6 +498,14 @@ section.flights-to .modal-block.modal-show .popup::before {
   margin: auto;
   width: 86px;
   height: 86px;
+}
+
+section.flights-to .modal-block.modal-show .popup.class-popup-error:before {
+  background: #e36666 center no-repeat;
+  content: "!";
+  color: #fff;
+  line-height: 86px;
+  font-size: 56px;
 }
 section.flights-to .modal-block.modal-show .popup .congrats-title {
   margin-top: -42px;
@@ -730,7 +745,7 @@ section.flights-to .flights-to > div.grayd {
   > div {
   display: grid;
   max-width: 400px;
-  margin: 10vw auto;
+  margin: 6vw auto;
   grid-template-columns: 1fr 1fr;
   grid-gap: 20px;
   grid-template-rows: 95px 1fr;
@@ -749,6 +764,7 @@ section.flights-to .flights-to > div.grayd {
 }
 .airportpicker {
   padding: 4px;
+  display: grid;
 }
 .airportpicker > p {
   font-size: 14px;
@@ -756,6 +772,21 @@ section.flights-to .flights-to > div.grayd {
   color: #808080;
   font-weight: bold;
   margin-bottom: 8px;
+  order: 1;
+}
+.airportpicker .dropdown.show_container ~ p {
+  color: #2e2e2e;
+}
+
+.airportpicker > p > b {
+  width: 0;
+  opacity: 0;
+  display: inline-block;
+  transition: all 0.5s ease;
+}
+.airportpicker .dropdown.show_container ~ p > b {
+  width: 42px;
+  opacity: 1;
 }
 section.flights-to .results-container {
   z-index: 10;
@@ -1071,6 +1102,7 @@ div.row-top.grided-with-line
   text-align: right;
   color: rgba(42, 42, 42, 0.6);
 }
+
 input#to,
 input#from {
   padding: 10px;
@@ -1088,6 +1120,15 @@ input#from {
   color: #4435d9;
   border-bottom: 1px solid #ccc;
   font-size: 12px;
+  transition: all 0.5s ease;
+}
+.airportpicker:has(.show_container) p {
+  colour: #f00;
+}
+.airportpicker .dropdown-item:hover {
+  background: #cccccc24;
+  color: #0d0090;
+  border-bottom: 1px solid #1700ff9c;
 }
 .airportpicker .dropdown-item.item_selected {
   font-weight: bold;
@@ -1128,4 +1169,16 @@ input#from {
 
 .airportpicker .dropdown {
   cursor: pointer;
+  order: 2;
+}
+
+.email-validator-error {
+  color: #c44747f5;
+  text-align: left;
+  font-size: 12px;
+  margin-top: 4px;
+  font-weight: bold;
+}
+section.flights-to .email_plus_terms .form-email.error {
+  outline-color: #c7525e;
 }

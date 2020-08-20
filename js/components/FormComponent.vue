@@ -34,12 +34,6 @@
             </div>
             <div class="fwvdp">
               <div class="airportpicker">
-                <p>
-                  Depature Airport:
-                  <span
-                    :class="{'not-selected':!airport_from.iata}"
-                  >{{airport_iata(airport_from)}}</span>
-                </p>
                 <DropDown
                   actionname="display_airports_from"
                   inputId="from"
@@ -48,14 +42,15 @@
                   :disabled="false"
                   placeholder="Please, start search your airport"
                 />
+                <p>
+                  <b>Select</b>
+                  Depature Airport:
+                  <span
+                    :class="{'not-selected':!airport_from.iata}"
+                  >{{airport_iata(airport_from)}}</span>
+                </p>
               </div>
               <div class="airportpicker">
-                <p>
-                  Return Airport:
-                  <span
-                    :class="{'not-selected':!airport_to.iata}"
-                  >{{airport_iata(airport_to)}}</span>
-                </p>
                 <DropDown
                   actionname="display_airports_to"
                   inputId="to"
@@ -64,7 +59,13 @@
                   :disabled="false"
                   placeholder="Please, start search your airport"
                 />
-                <p></p>
+                <p>
+                  <b>Select</b>
+                  Return Airport:
+                  <span
+                    :class="{'not-selected':!airport_to.iata}"
+                  >{{airport_iata(airport_to)}}</span>
+                </p>
               </div>
               <div class="trip_class" :class="{'trip-show' : airport_to.iata && airport_from.iata}">
                 <p>Trip 1: {{airport_city(airport_from)}} -> {{airport_city(airport_to)}}</p>
@@ -178,8 +179,17 @@
       <div class="email_plus_terms">
         <span>E-mail</span>
         <div class="d-flx">
-          <input type="email" name="email" v-model="email" class="form-email" required />
+          <input
+            type="email"
+            name="email"
+            v-model="email"
+            class="form-email"
+            :class="{'error': !email_is_valid}"
+            @input="email_check"
+            required
+          />
         </div>
+        <div class="email-validator-error" v-if="!email_is_valid">{{email_valid_msg}}</div>
 
         <p>Deine Ergebnisse sind in unter 5 Min. da.</p>
         <input type="checkbox" id="terms" />
@@ -190,12 +200,9 @@
       </div>
     </div>
     <div class="modal-block" :class="{'modal-show':modal_show}">
-      <div class="popup">
-        <div class="congrats-title">Thank you for your request!</div>
-        <p>
-          We will send you a mail in the next 2-3 minutes. Please check your
-          mailbox.
-        </p>
+      <div class="popup" :class="popup_message.class">
+        <div class="congrats-title" :class="popup_message.class">{{popup_message.title}}</div>
+        <p>{{popup_message.message}}</p>
         <div class="okbtn" @click="modal_show=false">Ok</div>
       </div>
     </div>
@@ -235,6 +242,8 @@ export default {
   },
   data() {
     return {
+      email_is_valid: true,
+      email_valid_msg: "Email is not valid",
       modal_show: false,
       StartDate: undefined,
       EndDate: undefined,
@@ -259,15 +268,32 @@ export default {
     DropDown,
   },
   methods: {
+    email_check() {
+      const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      if (re.test(String(this.email).toLowerCase())) {
+        this.email_is_valid = true;
+        return true;
+      } else {
+        this.email_is_valid = false;
+        return false;
+      }
+    },
+
     airports_modal(param) {
       this.$emit("show_airports_modal", param);
       this.show_airports_modal = true;
     },
     depature_selection(e) {
       this.airport_from = { city: e.name, iata: e.iata };
+      if (!this.airport_to.iata) {
+        this.airports_modal("to");
+      }
     },
     return_selection(e) {
       this.airport_to = { city: e.name, iata: e.iata };
+      if (!this.airport_from.iata) {
+        this.airports_modal("from");
+      }
     },
     airport_iata(airport) {
       if (airport.iata) {
@@ -329,33 +355,64 @@ export default {
       this.classtype = slug;
     },
     submitform(form) {
-      let data = {
-        action: "pao_flights_to_post_generation",
-        start: this.airport_from.iata,
-        destination: this.airport_to.iata,
-        startDate: this.date_depature.replace(/\//g, "-"),
-        endDate: this.date_return.replace(/\//g, "-"),
-        classInfo: this.classtype,
-        adult: this.counter_adults,
-        senior: this.counter_childs,
-        childrenAges: "",
-        email: this.email,
-        name: "undefined",
-        followupMail: "false",
-      };
-      data.payload =
-        data.start +
-        data.destination +
-        data.startDate +
-        data.endDate +
-        data.classInfo +
-        data.adult +
-        data.child;
-      this.modal_show = true;
-      console.log(data);
-      axios.post(this.actionurl, data);
+      if (!this.form_is_valid) {
+        console.log("form not valid");
+        this.modal_show = true;
+      } else {
+        let data = {
+          action: "pao_flights_to_post_generation",
+          start: this.airport_from.iata,
+          destination: this.airport_to.iata,
+          startDate: this.date_depature.replace(/\//g, "-"),
+          endDate: this.date_return.replace(/\//g, "-"),
+          classInfo: this.classtype,
+          adult: this.counter_adults,
+          senior: this.counter_childs,
+          childrenAges: "",
+          email: this.email,
+          name: "undefined",
+          followupMail: "false",
+        };
+        data.payload =
+          data.start +
+          data.destination +
+          data.startDate +
+          data.endDate +
+          data.classInfo +
+          data.adult +
+          data.child;
+        this.modal_show = true;
+        console.log(data);
+        axios.post(this.actionurl, data);
+      }
     },
   },
-  computed: {},
+  computed: {
+    form_is_valid() {
+      return (
+        this.email_check() &&
+        this.airport_to.iata &&
+        this.airport_from.iata &&
+        this.date_depature &&
+        this.date_return
+      );
+    },
+    popup_message() {
+      if (this.form_is_valid) {
+        return {
+          class: "popup-success",
+          title: "Thank you for your request!",
+          message:
+            "We will send you a mail in the next 2-3 minutes. Please check your mailbox.",
+        };
+      } else {
+        return {
+          class: "class-popup-error",
+          title: "Please, check your data",
+          message: "One or more fields not entered propertly, please, check",
+        };
+      }
+    },
+  },
 };
 </script>

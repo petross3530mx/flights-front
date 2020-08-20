@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown" v-if="options">
+  <div :class="{'show_container':optionsShown}" class="dropdown" v-if="options">
     <!-- Dropdown Input -->
     <input
       ref="input"
@@ -107,9 +107,11 @@ export default {
     },
     setActive(e) {
       if (e == this.inputId) {
-        console.log(e);
-        this.$refs.input.focus();
-        this.optionsShown = true;
+        setTimeout(() => {
+          this.$refs.input.focus();
+          this.optionsShown = true;
+          console.log(e + " set active");
+        }, 500);
         //this.$emit("disable_other_options");
       }
     },
