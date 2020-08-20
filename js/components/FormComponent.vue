@@ -66,6 +66,10 @@
                 />
                 <p></p>
               </div>
+              <div class="trip_class" :class="{'trip-show' : airport_to.iata && airport_from.iata}">
+                <p>Trip 1: {{airport_city(airport_from)}} -> {{airport_city(airport_to)}}</p>
+                <p>Trip 2: {{airport_city(airport_to)}} -> {{airport_city(airport_from)}}</p>
+              </div>
               <div class="savebtn-mixer">
                 <div v-show="airport_from.iata && airport_to.iata">
                   <div class="savebtn-container">
@@ -89,7 +93,7 @@
         <div
           id="flights-from-to-switcher"
           @click="shullfie_airports"
-          :class="[{'grayd': !airport_to.name||!airport_from.name}]"
+          :class="[{'grayd': !airport_to.iata || !airport_from.iata}]"
         ></div>
         <div class="flights-to" @click="airports_modal('to')">
           <span>To</span>
@@ -103,7 +107,7 @@
       <div class="depature-return">
         <div :class="{'modal-show':show_date_modal}" class="flights-modal">
           <div>
-            <VueDatepicker :startDate="startDate" :endDate="endDate" @confirm="close_date_popup" />
+            <VueDatepicker @confirm="close_date_popup" />
             <div class="savebtn-container">
               <span @click="choose_passengers_modal=false">Save</span>
             </div>
@@ -286,7 +290,10 @@ export default {
       return "Month";
     },
     shullfie_airports() {
-      console.log("shullfie");
+      let from = this.airport_from;
+      this.airport_from = this.airport_to;
+      this.airport_to = from;
+      this.$emit("shullfie_airports");
     },
     day_formatted(date) {
       let days = [

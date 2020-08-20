@@ -179,11 +179,26 @@ section.flights-to .flights-to > div {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  padding: 8px;
+  padding: 16px;
   cursor: pointer;
+  margin-top: 20px;
+  border: 1px solid transparent;
+  transition: all 0.5s ease;
 }
 #flights-from-to-switcher.grayd {
   opacity: 0.2;
+}
+
+#flights-from-to-switcher:active {
+  opacity: 0.5;
+  border: 1px solid #4435d9;
+}
+.from-to-switch:active .blued {
+  color: #4435d980;
+}
+
+.from-to-switch .blued {
+  transition: all 0.2s ease;
 }
 section.flights-to .depature-return > div > span,
 section.flights-to .email_plus_terms > span,
@@ -385,6 +400,22 @@ section.flights-to .email_plus_terms .form-email {
   padding: 14px;
   color: #2a2a2a;
   font-family: "SF UI Text", Open Sans;
+  outline-color: #4435d978;
+}
+.trip_class {
+  color: #808080;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  height: 0;
+  opacity: 0;
+  transition: all 1s ease;
+  display: table-cell;
+  vertical-align: bottom;
+}
+.trip_class.trip-show {
+  height: 80px;
+  opacity: 1;
 }
 section.flights-to .depature-return,
 section.flights-to .from-to-switch,

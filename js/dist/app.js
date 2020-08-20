@@ -2593,6 +2593,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -2690,7 +2694,10 @@ __webpack_require__.r(__webpack_exports__);
       return "Month";
     },
     shullfie_airports: function shullfie_airports() {
-      console.log("shullfie");
+      var from = this.airport_from;
+      this.airport_from = this.airport_to;
+      this.airport_to = from;
+      this.$emit("shullfie_airports");
     },
     day_formatted: function day_formatted(date) {
       var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -5008,6 +5015,36 @@ var render = function() {
                       1
                     ),
                     _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "trip_class",
+                        class: {
+                          "trip-show":
+                            _vm.airport_to.iata && _vm.airport_from.iata
+                        }
+                      },
+                      [
+                        _c("p", [
+                          _vm._v(
+                            "Trip 1: " +
+                              _vm._s(_vm.airport_city(_vm.airport_from)) +
+                              " -> " +
+                              _vm._s(_vm.airport_city(_vm.airport_to))
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("p", [
+                          _vm._v(
+                            "Trip 2: " +
+                              _vm._s(_vm.airport_city(_vm.airport_to)) +
+                              " -> " +
+                              _vm._s(_vm.airport_city(_vm.airport_from))
+                          )
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
                     _c("div", { staticClass: "savebtn-mixer" }, [
                       _c(
                         "div",
@@ -5081,7 +5118,7 @@ var render = function() {
             _vm._v(" "),
             _c("div", {
               class: [
-                { grayd: !_vm.airport_to.name || !_vm.airport_from.name }
+                { grayd: !_vm.airport_to.iata || !_vm.airport_from.iata }
               ],
               attrs: { id: "flights-from-to-switcher" },
               on: { click: _vm.shullfie_airports }
@@ -5135,7 +5172,6 @@ var render = function() {
                   "div",
                   [
                     _c("VueDatepicker", {
-                      attrs: { startDate: _vm.startDate, endDate: _vm.endDate },
                       on: { confirm: _vm.close_date_popup }
                     }),
                     _vm._v(" "),
