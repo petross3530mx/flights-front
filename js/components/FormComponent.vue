@@ -186,10 +186,15 @@
             class="form-email"
             :class="{'error': !email_is_valid}"
             @input="email_check"
+            @blur="handleunfocus(false)"
+            @focus="handleunfocus(true)"
             required
           />
         </div>
-        <div class="email-validator-error" v-if="!email_is_valid">{{email_valid_msg}}</div>
+        <div
+          class="email-validator-error"
+          v-if="!email_is_valid && email_unfocused"
+        >{{email_valid_msg}}</div>
 
         <p>Deine Ergebnisse sind in unter 5 Min. da.</p>
         <input type="checkbox" id="terms" />
@@ -242,6 +247,7 @@ export default {
   },
   data() {
     return {
+      email_unfocused: false,
       email_is_valid: true,
       email_valid_msg: "Email is not valid",
       modal_show: false,
@@ -278,7 +284,13 @@ export default {
         return false;
       }
     },
-
+    handleunfocus(focused) {
+      if (focused) {
+        this.email_unfocused = false;
+      } else {
+        this.email_unfocused = true;
+      }
+    },
     airports_modal(param) {
       this.$emit("show_airports_modal", param);
       this.show_airports_modal = true;

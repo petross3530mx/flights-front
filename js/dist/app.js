@@ -2609,6 +2609,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -2642,6 +2647,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      email_unfocused: false,
       email_is_valid: true,
       email_valid_msg: "Email is not valid",
       modal_show: false,
@@ -2677,6 +2683,13 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.email_is_valid = false;
         return false;
+      }
+    },
+    handleunfocus: function handleunfocus(focused) {
+      if (focused) {
+        this.email_unfocused = false;
+      } else {
+        this.email_unfocused = true;
       }
     },
     airports_modal: function airports_modal(param) {
@@ -5472,12 +5485,18 @@ var render = function() {
                       _vm.email = $event.target.value
                     },
                     _vm.email_check
-                  ]
+                  ],
+                  blur: function($event) {
+                    return _vm.handleunfocus(false)
+                  },
+                  focus: function($event) {
+                    return _vm.handleunfocus(true)
+                  }
                 }
               })
             ]),
             _vm._v(" "),
-            !_vm.email_is_valid
+            !_vm.email_is_valid && _vm.email_unfocused
               ? _c("div", { staticClass: "email-validator-error" }, [
                   _vm._v(_vm._s(_vm.email_valid_msg))
                 ])
