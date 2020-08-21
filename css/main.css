@@ -1182,12 +1182,6 @@ section.flights-to .email_plus_terms .form-email.error {
 }
 
 /* */
-section.flights-to.results:before {
-  background: #7367f0;
-  background: url(../img/map.svg) #7367f0;
-  background-repeat: no-repeat;
-  background-position: center 40px;
-}
 
 .flights-results.results-mobile {
   max-width: 400px;
