@@ -837,7 +837,7 @@ section.flights-to .flights-results {
   z-index: 10;
   margin: auto;
 }
-section.flights-to .results-mobile {
+section.flights-to .results-airports {
   max-width: 540px;
 }
 section.flights-to .results-desktop {
@@ -858,12 +858,12 @@ section.flights-to .results-desktop {
 .white-text {
   color: #fff;
 }
-.flights-to .results-mobile .results-dashboard-head {
+.flights-to .results-airports .results-dashboard-head {
   display: grid;
   grid-template-columns: 1fr 0.8fr 1fr 0.5fr;
   border-bottom: 1px solid #ddddea;
 }
-.flights-to .results-mobile .results-dashboard-head > div {
+.flights-to .results-airports .results-dashboard-head > div {
   padding: 14px 0;
   font-weight: 600;
   font-size: 14px;
@@ -872,7 +872,7 @@ section.flights-to .results-desktop {
   text-transform: uppercase;
   color: rgba(42, 42, 42, 0.8);
 }
-.flights-to .results-mobile .save-notice {
+.flights-to .results-airports .save-notice {
   font-weight: 700;
   font-size: 16px;
   display: block;
@@ -920,9 +920,7 @@ section.flights-to .results-desktop {
   display: inline-block;
   vertical-align: baseline;
 }
-.results-desktop {
-  display: none;
-}
+
 .flights-results .table-content .tabs {
   display: flex;
   justify-content: center;
@@ -1181,4 +1179,20 @@ input#from {
 }
 section.flights-to .email_plus_terms .form-email.error {
   outline-color: #c7525e;
+}
+
+/* */
+section.flights-to.results:before {
+  background: #7367f0;
+  background: url(../img/map.svg) #7367f0;
+  background-repeat: no-repeat;
+  background-position: center 40px;
+}
+
+.flights-results.results-mobile {
+  max-width: 400px;
+}
+.flights-item-button,
+.mobile-only-flights {
+  display: none;
 }
