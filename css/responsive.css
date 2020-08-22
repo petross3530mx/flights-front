@@ -75,40 +75,8 @@
 }
 
 @media (max-width: 640px) {
-  .flights-results .table-content .tabs {
-    display: none;
-  }
-  .flights-item-button a {
-    font-weight: 600;
-    font-size: 20px;
-    text-align: center;
-    color: #2a2a2a;
-    text-decoration: none;
-    display: inline-block;
-    background: #50e3c2;
-    border-radius: 21px;
-    padding: 10px 20px;
-    margin: 15px auto;
-  }
-  .flights-results.results-desktop .flights-item {
-    box-shadow: none;
-  }
-  .flights-item-button {
-    background: linear-gradient(0deg, #f7f7f7, white);
-    padding-bottom: 8px;
-    display: block;
-  }
   .mobile-dn {
     display: none;
-  }
-  .flights-results.results-desktop .flights-item .footer-row {
-    grid-template-columns: 3fr 2fr 1fr;
-  }
-  .mobile-only-flights {
-    text-align: left;
-    line-height: 50px;
-    font-size: 20px;
-    display: block;
   }
 }
 

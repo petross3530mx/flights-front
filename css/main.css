@@ -841,7 +841,7 @@ section.flights-to .results-airports {
   max-width: 540px;
 }
 section.flights-to .results-desktop {
-  max-width: 680px;
+  max-width: 400px;
 }
 .bg-white {
   background: #fff;
@@ -979,15 +979,12 @@ section.flights-to .results-desktop {
 .flights-results.results-desktop .flights-item .footer-row {
   background: #f1f0f5;
   display: grid;
-  grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+  grid-template-columns: 3fr 3fr;
 }
 .flights-results.results-desktop .flights-item .grided-with-line {
   display: grid;
   grid-template-columns: 1fr 100px;
   margin: 20px 1px;
-  padding-top: 32px;
-  margin: 20px 1px;
-  padding-top: 32px;
   align-items: center;
 }
 .flights-results.results-desktop
@@ -1019,13 +1016,20 @@ section.flights-to .results-desktop {
 .footer-row > div {
   padding: 8px;
 }
+.footer-row > div:last-child {
+  text-align: right;
+}
 .footer-row > div:last-child span {
   font-weight: 700;
   font-size: 16px;
   text-align: right;
   color: #2a2a2a;
-  display: block;
+  display: inline-block;
   margin-bottom: 12px;
+}
+.footer-row > div:last-child div {
+  display: inline-block;
+  margin-right: 12px;
 }
 .footer-row div a {
   font-weight: 600;
@@ -1186,7 +1190,35 @@ section.flights-to .email_plus_terms .form-email.error {
 .flights-results.results-mobile {
   max-width: 400px;
 }
-.flights-item-button,
+.flights-item-button a {
+  font-weight: 600;
+  font-size: 20px;
+  text-align: center;
+  color: #2a2a2a;
+  text-decoration: none;
+  display: inline-block;
+  background: #50e3c2;
+  border-radius: 21px;
+  padding: 10px 20px;
+  margin: 15px auto;
+}
+.flights-results.results-desktop .flights-item {
+  box-shadow: none;
+}
+.flights-item-button {
+  background: linear-gradient(0deg, #f7f7f7, white);
+  padding-bottom: 8px;
+  display: block;
+}
 .mobile-only-flights {
-  display: none;
+  text-align: left;
+  line-height: 50px;
+  font-size: 20px;
+  display: block;
+}
+.grid-lefted .purple-span {
+  font-weight: 600;
+  font-size: 14px;
+  color: #7367f0;
+  margin-right: 10px;
 }
