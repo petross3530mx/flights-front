@@ -67,8 +67,20 @@
   .flights-results.results-desktop {
     display: block;
   }
+  section.flights-to .results-desktop {
+    max-width: 640px;
+  }
+  .flights-results.results-desktop .flights-item {
+    max-width: 480px;
+  }
 }
-@media (min-width: 1280px) {
+@media (min-width: 1080px) {
+  section.flights-to .results-desktop {
+    max-width: 900px;
+  }
+  .flights-results.results-desktop .flights-item {
+    max-width: 500px;
+  }
 }
 
 @media (max-width: 1280px) {
