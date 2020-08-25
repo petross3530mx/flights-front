@@ -208,7 +208,7 @@
       <div class="popup" :class="popup_message.class">
         <div class="congrats-title" :class="popup_message.class">{{popup_message.title}}</div>
         <p>{{popup_message.message}}</p>
-        <div class="okbtn" @click="modal_show=false">Ok</div>
+        <div class="okbtn" @click="modal_ok_reload">Ok</div>
       </div>
     </div>
   </form>
@@ -222,6 +222,9 @@ export default {
   props: {
     id: {
       required: true,
+    },
+    redirect_url: {
+      required: false,
     },
     actionurl: {
       type: String,
@@ -274,6 +277,16 @@ export default {
     DropDown,
   },
   methods: {
+    modal_ok_reload() {
+      if (this.form_is_valid) {
+        if (this.redirect_url) {
+          window.location = this.redirect_url;
+        } else {
+          location.reload();
+        }
+      }
+      this.modal_show = false;
+    },
     email_check() {
       const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       if (re.test(String(this.email).toLowerCase())) {
@@ -360,15 +373,11 @@ export default {
     select_adults(number) {
       this.counter_adults = number;
     },
-    sendemail(data) {
-      console.log(data);
-    },
     set_type(slug) {
       this.classtype = slug;
     },
     submitform(form) {
       if (!this.form_is_valid) {
-        console.log("form not valid");
         this.modal_show = true;
       } else {
         let data = {
@@ -378,8 +387,8 @@ export default {
           startDate: this.date_depature.replace(/\//g, "-"),
           endDate: this.date_return.replace(/\//g, "-"),
           classInfo: this.classtype,
-          adult: this.counter_adults,
-          senior: this.counter_childs,
+          adult: this.counter_adults || 1,
+          senior: this.counter_childs || 0,
           childrenAges: "",
           email: this.email,
           name: "undefined",
@@ -392,9 +401,8 @@ export default {
           data.endDate +
           data.classInfo +
           data.adult +
-          data.child;
+          data.senior;
         this.modal_show = true;
-        console.log(data);
         axios.post(this.actionurl, data);
       }
     },
