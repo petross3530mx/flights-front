@@ -121,7 +121,6 @@
               <span @click="choose_passengers_modal=false">Save</span>
             </div>
           </div>
-          <span @click="show_date_modal=false">x</span>
         </div>
         <div class="flights-from" @click="show_date_modal=true">
           <span>Depatrure</span>

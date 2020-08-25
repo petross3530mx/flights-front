@@ -754,16 +754,6 @@ section.flights-to .flights-to > div.grayd {
 .flights-to-dashboard.flights-search-field.disable-select
   > div.from-to-switch
   > div.flights-modal
-  > span {
-  position: absolute;
-  right: calc(50vw - 211px);
-  top: 5vh;
-  color: #fff;
-  cursor: pointer;
-}
-.flights-to-dashboard.flights-search-field.disable-select
-  > div.from-to-switch
-  > div.flights-modal
   > div
   > div {
   padding: 8px 22px;
