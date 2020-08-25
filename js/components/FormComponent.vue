@@ -12,7 +12,11 @@
     </div>
     <div class="flights-to-dashboard flights-search-field disable-select">
       <div class="from-to-switch">
-        <div :class="[{'modal-show':show_airports_modal}]" class="flights-modal">
+        <div
+          :class="[{'modal-show':show_airports_modal}]"
+          class="flights-modal"
+          @click.self="show_airports_modal=false"
+        >
           <div>
             <div
               @click="airports_modal('from')"
@@ -106,13 +110,18 @@
       </div>
 
       <div class="depature-return">
-        <div :class="{'modal-show':show_date_modal}" class="flights-modal">
+        <div
+          :class="{'modal-show':show_date_modal}"
+          class="flights-modal"
+          @click.self="show_date_modal=false"
+        >
           <div>
             <VueDatepicker @confirm="close_date_popup" />
             <div class="savebtn-container">
               <span @click="choose_passengers_modal=false">Save</span>
             </div>
           </div>
+          <span @click="show_date_modal=false">x</span>
         </div>
         <div class="flights-from" @click="show_date_modal=true">
           <span>Depatrure</span>
@@ -131,10 +140,11 @@
       </div>
 
       <div class="passengers">
-        <input type="hidden" name="adult_passengers" />
-        <input type="hidden" name="child_passengers" />
-
-        <div :class="{'modal-show':choose_passengers_modal}" class="modal-passengers">
+        <div
+          @click.self="choose_passengers_modal=false"
+          :class="{'modal-show':choose_passengers_modal}"
+          class="modal-passengers"
+        >
           <div>
             <p class="passengers-modal-title">Passengers</p>
             <scroller
@@ -155,6 +165,7 @@
               <span @click="choose_passengers_modal=false">Save</span>
             </div>
           </div>
+          <span @click="show_date_modal=false"></span>
         </div>
 
         <div class="adult">
