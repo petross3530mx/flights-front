@@ -391,7 +391,7 @@ export default {
         this.modal_show = true;
       } else {
         let data = {
-          action: "pao_flights_to_post_generation",
+          action: "srf_post_gen",
           start: this.airport_from.iata,
           destination: this.airport_to.iata,
           startDate: this.date_depature.replace(/\//g, "-"),
