@@ -110,7 +110,7 @@ export default {
         setTimeout(() => {
           this.$refs.input.focus();
           this.optionsShown = true;
-          console.log(e + " set active");
+          //console.log(e + " set active");
         }, 500);
         //this.$emit("disable_other_options");
       }

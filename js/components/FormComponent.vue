@@ -187,26 +187,6 @@
       </div>
 
       <div class="email_plus_terms">
-        <span>E-mail</span>
-        <div class="d-flx">
-          <input
-            type="email"
-            name="email"
-            v-model="email"
-            class="form-email"
-            :class="{'error': !email_is_valid}"
-            @input="email_check"
-            @blur="handleunfocus(false)"
-            @focus="handleunfocus(true)"
-            required
-          />
-        </div>
-        <div
-          class="email-validator-error"
-          v-if="!email_is_valid && email_unfocused"
-        >{{email_valid_msg}}</div>
-
-        <p>Deine Ergebnisse sind in unter 5 Min. da.</p>
         <input type="checkbox" id="terms" />
         <label id="termslabel" for="terms">Ich mochte tolle Angebote erhalten</label>
       </div>
@@ -225,6 +205,7 @@
 </template>
 <script>
 import axios from "axios";
+import qs from "querystring";
 import Scroller from "../components/Scroller";
 import VueDatepicker from "../components/VueDatepicker";
 import DropDown from "../components/DropDown";
@@ -251,18 +232,13 @@ export default {
       type: Array,
       required: true,
     },
-    defaultemail: {
-      required: false,
-    },
+
     airports: {
       required: true,
     },
   },
   data() {
     return {
-      email_unfocused: false,
-      email_is_valid: true,
-      email_valid_msg: "Email is not valid",
       modal_show: false,
       StartDate: undefined,
       EndDate: undefined,
@@ -277,7 +253,6 @@ export default {
       choose_passengers_modal: false,
       show_date_modal: false,
       classtype: this.classes[0].slug,
-      email: this.defaultemail,
       airportsto: this.airports,
     };
   },
@@ -296,23 +271,6 @@ export default {
         }
       }
       this.modal_show = false;
-    },
-    email_check() {
-      const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      if (re.test(String(this.email).toLowerCase())) {
-        this.email_is_valid = true;
-        return true;
-      } else {
-        this.email_is_valid = false;
-        return false;
-      }
-    },
-    handleunfocus(focused) {
-      if (focused) {
-        this.email_unfocused = false;
-      } else {
-        this.email_unfocused = true;
-      }
     },
     airports_modal(param) {
       this.$emit("show_airports_modal", param);
@@ -400,7 +358,6 @@ export default {
           adult: this.counter_adults || 1,
           senior: this.counter_childs || 0,
           childrenAges: "",
-          email: this.email,
           name: "undefined",
           followupMail: "false",
         };
@@ -413,14 +370,19 @@ export default {
           data.adult +
           data.senior;
         this.modal_show = true;
-        axios.post(this.actionurl, data);
+        axios
+          .post(this.actionurl, qs.stringify(data), {
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          })
+          .then((response) => {
+            console.log(response);
+          });
       }
     },
   },
   computed: {
     form_is_valid() {
       return (
-        this.email_check() &&
         this.airport_to.iata &&
         this.airport_from.iata &&
         this.date_depature &&
