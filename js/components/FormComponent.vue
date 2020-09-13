@@ -13,9 +13,9 @@
     <div class="flights-to-dashboard flights-search-field disable-select">
       <div class="from-to-switch">
         <div
-          :class="[{'modal-show':show_airports_modal}]"
+          :class="[{'modal-show':modals.airports}]"
           class="flights-modal"
-          @click.self="show_airports_modal=false"
+          @click.self="modals.airports=false"
         >
           <div>
             <div
@@ -78,7 +78,7 @@
               <div class="savebtn-mixer">
                 <div v-show="airport_from.iata && airport_to.iata">
                   <div class="savebtn-container">
-                    <span @click="show_airports_modal = false">Save</span>
+                    <span @click="modals.airports = false">Save</span>
                   </div>
                 </div>
               </div>
@@ -111,25 +111,25 @@
 
       <div class="depature-return">
         <div
-          :class="{'modal-show':show_date_modal}"
+          :class="{'modal-show':modals.date}"
           class="flights-modal"
-          @click.self="show_date_modal=false"
+          @click.self="modals.date=false"
         >
           <div>
             <VueDatepicker @confirm="close_date_popup" />
             <div class="savebtn-container">
-              <span @click="choose_passengers_modal=false">Save</span>
+              <span @click="modals.passengers=false">Save</span>
             </div>
           </div>
         </div>
-        <div class="flights-from" @click="show_date_modal=true">
+        <div class="flights-from" @click="modals.date=true">
           <span>Depatrure</span>
           <div id="flights-depature" :class="{'grayd': !date_depature}">
             <div class="date_formatted">{{date_formatted(date_depature)}}</div>
             <div class="date_day">{{day_formatted(date_depature)}}</div>
           </div>
         </div>
-        <div class="flights-to" @click="show_date_modal=true">
+        <div class="flights-to" @click="modals.date=true">
           <span>Return</span>
           <div id="flights-return" :class="{'grayd': !date_return}">
             <div class="date_formatted">{{date_formatted(date_return)}}</div>
@@ -140,8 +140,8 @@
 
       <div class="passengers">
         <div
-          @click.self="choose_passengers_modal=false"
-          :class="{'modal-show':choose_passengers_modal}"
+          @click.self="modals.passengers=false"
+          :class="{'modal-show':modals.passengers}"
           class="modal-passengers"
         >
           <div>
@@ -161,26 +161,26 @@
               @selectedValue="select_childs"
             ></scroller>
             <div class="savebtn-container">
-              <span @click="choose_passengers_modal=false">Save</span>
+              <span @click="modals.passengers=false">Save</span>
             </div>
           </div>
-          <span @click="show_date_modal=false"></span>
+          <span @click="modals.date=false"></span>
         </div>
 
         <div class="adult">
           <span>Passengers</span>
-          <div id="passengers-adults" @click="choose_passengers_modal=true">
+          <div id="passengers-adults" @click="modals.passengers=true">
             <div class="passengers-title">Adults</div>
-            <div class="passengers-counter">{{counter_adults}}</div>
+            <div class="passengers-counter">{{counter.adults}}</div>
             <div class="passengers-description">12+ years</div>
           </div>
         </div>
 
         <div class="child">
           <span style="visibility: hidden;">Passengers</span>
-          <div id="passengers-children" @click="choose_passengers_modal=true">
+          <div id="passengers-children" @click="modals.passengers=true">
             <div class="passengers-title">Children</div>
-            <div class="passengers-counter">{{counter_childs}}</div>
+            <div class="passengers-counter">{{counter.childs}}</div>
             <div class="passengers-description">2 - 12 years</div>
           </div>
         </div>
@@ -194,11 +194,16 @@
         <input id="submitbtn" type="submit" class="submit" value="Search flight" />
       </div>
     </div>
-    <div class="modal-block" :class="{'modal-show':modal_show}">
+    <div class="modal-block" :class="{'modal-show':modals.main}">
       <div class="popup" :class="popup_message.class">
         <div class="congrats-title" :class="popup_message.class">{{popup_message.title}}</div>
         <p>{{popup_message.message}}</p>
-        <div class="okbtn" @click="modal_ok_reload">Ok</div>
+        <LoadAnimation class="hidden-by-default" :class="{'show-item':state.formsending}" />
+        <div
+          class="okbtn hidden-by-default"
+          :class="{'show-item':!state.formsending }"
+          @click="modal_ok_reload"
+        >{{popup_message.okbtn}}</div>
       </div>
     </div>
   </form>
@@ -206,6 +211,7 @@
 <script>
 import axios from "axios";
 import qs from "querystring";
+import LoadAnimation from "../components/LoadAnimation";
 import Scroller from "../components/Scroller";
 import VueDatepicker from "../components/VueDatepicker";
 import DropDown from "../components/DropDown";
@@ -213,9 +219,6 @@ export default {
   props: {
     id: {
       required: true,
-    },
-    redirect_url: {
-      required: false,
     },
     actionurl: {
       type: String,
@@ -232,34 +235,42 @@ export default {
       type: Array,
       required: true,
     },
-
     airports: {
       required: true,
     },
   },
   data() {
     return {
-      modal_show: false,
-      StartDate: undefined,
-      EndDate: undefined,
-      testEndDate: undefined,
+      payload: "",
+      redirect_url: "",
       airport_from: false,
       airport_to: false,
       date_depature: null,
       date_return: null,
-      show_airports_modal: null,
-      counter_adults: 1,
-      counter_childs: 0,
-      choose_passengers_modal: false,
-      show_date_modal: false,
       classtype: this.classes[0].slug,
       airportsto: this.airports,
+
+      state: {
+        formsending: false,
+        foundFlights: true,
+      },
+      modals: {
+        main: false,
+        date: false,
+        airports: false,
+        passengers: false,
+      },
+      counter: {
+        adults: 1,
+        childs: 0,
+      },
     };
   },
   components: {
     Scroller,
     VueDatepicker,
     DropDown,
+    LoadAnimation,
   },
   methods: {
     modal_ok_reload() {
@@ -267,14 +278,14 @@ export default {
         if (this.redirect_url) {
           window.location = this.redirect_url;
         } else {
-          location.reload();
+          //location.reload();
         }
       }
-      this.modal_show = false;
+      this.modals.main = false;
     },
     airports_modal(param) {
       this.$emit("show_airports_modal", param);
-      this.show_airports_modal = true;
+      this.modals.airports = true;
     },
     depature_selection(e) {
       this.airport_from = { city: e.name, iata: e.iata };
@@ -333,20 +344,20 @@ export default {
     close_date_popup(e) {
       this.date_depature = e.start;
       this.date_return = e.end;
-      this.show_date_modal = false;
+      this.modals.date = false;
     },
     select_childs(number) {
-      this.counter_childs = number;
+      this.counter.childs = number;
     },
     select_adults(number) {
-      this.counter_adults = number;
+      this.counter.adults = number;
     },
     set_type(slug) {
       this.classtype = slug;
     },
     submitform(form) {
       if (!this.form_is_valid) {
-        this.modal_show = true;
+        this.modals.main = true;
       } else {
         let data = {
           action: "srf_post_gen",
@@ -355,9 +366,10 @@ export default {
           startDate: this.date_depature.replace(/\//g, "-"),
           endDate: this.date_return.replace(/\//g, "-"),
           classInfo: this.classtype,
-          adult: this.counter_adults || 1,
-          senior: this.counter_childs || 0,
+          adult: this.counter.adults || 1,
+          senior: this.counter.childs || 0,
           childrenAges: "",
+          task: "postquery",
           name: "undefined",
           followupMail: "false",
         };
@@ -369,12 +381,23 @@ export default {
           data.classInfo +
           data.adult +
           data.senior;
-        this.modal_show = true;
+        this.payload = data.payload;
+        this.modals.main = true;
+        this.state = { formsending: true, foundFlights: false };
+
         axios
           .post(this.actionurl, qs.stringify(data), {
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
           })
           .then((response) => {
+            if (response.data == "postgenerated") {
+              this.state = { formsending: false, foundFlights: true };
+              this.redirect_url = "/" + this.payload.toLowerCase();
+            }
+            if (response.data == "noflights") {
+              this.state = { formsending: false, foundFlights: false };
+              this.redirect_url = "";
+            }
             console.log(response);
           });
       }
@@ -390,18 +413,36 @@ export default {
       );
     },
     popup_message() {
-      if (this.form_is_valid) {
+      if (this.form_is_valid && !this.state.formsending) {
+        if (!this.state.foundFlights) {
+          return {
+            class: "class-popup-error",
+            title: "No Results",
+            message:
+              "Sorry, your flights are not found, please, try enter another data",
+            okbtn: "Ok",
+          };
+        }
         return {
           class: "popup-success",
           title: "Thank you for your request!",
-          message:
-            "We will send you a mail in the next 2-3 minutes. Please check your mailbox.",
+          message: "Press button below to view your flights",
+          okbtn: "View flights",
         };
       } else {
+        if (this.state.formsending) {
+          return {
+            class: "popup-success",
+            title: "Your request is processing now",
+            message: "Please, wait until processing will finish",
+            okbtn: "",
+          };
+        }
         return {
           class: "class-popup-error",
           title: "Please, check your data",
           message: "One or more fields not entered propertly, please, check",
+          okbtn: "Ok",
         };
       }
     },

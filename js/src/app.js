@@ -1,6 +1,6 @@
 import Vue from "vue";
 
-Vue.config.devtools = true;
+Vue.config.devtools = false;
 
 Vue.component(
   "form-component",
@@ -11,6 +11,6 @@ var vm = new Vue({
   el: "#section_flights_to",
   data: {},
   mounted: function() {
-    console.log("vue");
+    //console.log("mounted");
   },
 });

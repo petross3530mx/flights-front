@@ -93,6 +93,9 @@
 }
 
 @media (max-width: 420px) {
+  .cube_container {
+    width: calc(100vw - 40px);
+  }
   section.flights-to:after {
     content: "";
     background: #fff;

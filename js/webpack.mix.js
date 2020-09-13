@@ -12,6 +12,7 @@ let mix = require("webpack-mix");
  */
 
 mix.js("src/app.js", "dist/");
+mix.js("src/results.js", "dist/");
 
 // Full API
 // mix.js(src, output);

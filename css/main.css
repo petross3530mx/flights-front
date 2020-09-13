@@ -166,7 +166,7 @@ section.flights-to .passengers > div {
   text-align: left;
   margin-top: 16px;
   width: 40%;
-  height: 88px;
+  height: auto;
 }
 section.flights-to .flights-from > div,
 section.flights-to .flights-to > div {
@@ -379,7 +379,8 @@ input#terms {
 }
 section.flights-to .email_plus_terms {
   margin: 10px;
-  text-align: center;
+  text-align: left;
+  padding-top: 16px;
 }
 section.flights-to .email_plus_terms > span {
   display: block;
@@ -1222,4 +1223,9 @@ section.flights-to .email_plus_terms .form-email.error {
   font-size: 14px;
   color: #7367f0;
   margin-right: 10px;
+}
+
+.plane-container svg {
+  background: url("../img/plane.svg") no-repeat center;
+  background-size: contain !important;
 }
