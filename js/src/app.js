@@ -1,6 +1,6 @@
 import Vue from "vue";
 
-Vue.config.devtools = false;
+Vue.config.devtools = true;
 
 Vue.component(
   "form-component",

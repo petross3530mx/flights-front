@@ -5,36 +5,41 @@
       <span
         v-for="class_item in classes"
         :key="class_item.slug"
-        :class="{'active':class_item.slug == classtype }"
+        :class="{ active: class_item.slug == classtype }"
         class="disable-select"
         @click="set_type(class_item.slug)"
-      >{{class_item.title}}</span>
+        >{{ class_item.title }}</span
+      >
     </div>
     <div class="flights-to-dashboard flights-search-field disable-select">
       <div class="from-to-switch">
         <div
-          :class="[{'modal-show':modals.airports}]"
+          :class="[{ 'modal-show': modals.airports }]"
           class="flights-modal"
-          @click.self="modals.airports=false"
+          @click.self="airports_modal_close()"
         >
           <div>
             <div
               @click="airports_modal('from')"
               class="airport-upper"
-              :class="{'not-selected':!airport_from.iata}"
+              :class="{ 'not-selected': !airport_from.iata }"
             >
               <span>From</span>
-              <div class="iata">{{airport_iata(airport_from)}}</div>
-              <div class="airport-description">{{airport_city(airport_from)}}</div>
+              <div class="iata">{{ airport_iata(airport_from) }}</div>
+              <div class="airport-description">
+                {{ airport_city(airport_from) }}
+              </div>
             </div>
             <div
               @click="airports_modal('to')"
               class="airport-upper"
-              :class="{'not-selected':!airport_to.iata}"
+              :class="{ 'not-selected': !airport_to.iata }"
             >
               <span>To</span>
-              <div class="iata">{{airport_iata(airport_to)}}</div>
-              <div class="airport-description">{{airport_city(airport_to)}}</div>
+              <div class="iata">{{ airport_iata(airport_to) }}</div>
+              <div class="airport-description">
+                {{ airport_city(airport_to) }}
+              </div>
             </div>
             <div class="fwvdp">
               <div class="airportpicker">
@@ -49,9 +54,9 @@
                 <p>
                   <b>Select</b>
                   Depature Airport:
-                  <span
-                    :class="{'not-selected':!airport_from.iata}"
-                  >{{airport_iata(airport_from)}}</span>
+                  <span :class="{ 'not-selected': !airport_from.iata }">{{
+                    airport_iata(airport_from)
+                  }}</span>
                 </p>
               </div>
               <div class="airportpicker">
@@ -66,19 +71,28 @@
                 <p>
                   <b>Select</b>
                   Return Airport:
-                  <span
-                    :class="{'not-selected':!airport_to.iata}"
-                  >{{airport_iata(airport_to)}}</span>
+                  <span :class="{ 'not-selected': !airport_to.iata }">{{
+                    airport_iata(airport_to)
+                  }}</span>
                 </p>
               </div>
-              <div class="trip_class" :class="{'trip-show' : airport_to.iata && airport_from.iata}">
-                <p>Trip 1: {{airport_city(airport_from)}} -> {{airport_city(airport_to)}}</p>
-                <p>Trip 2: {{airport_city(airport_to)}} -> {{airport_city(airport_from)}}</p>
+              <div
+                class="trip_class"
+                :class="{ 'trip-show': airport_to.iata && airport_from.iata }"
+              >
+                <p>
+                  Trip 1: {{ airport_city(airport_from) }} ->
+                  {{ airport_city(airport_to) }}
+                </p>
+                <p>
+                  Trip 2: {{ airport_city(airport_to) }} ->
+                  {{ airport_city(airport_from) }}
+                </p>
               </div>
               <div class="savebtn-mixer">
                 <div v-show="airport_from.iata && airport_to.iata">
                   <div class="savebtn-container">
-                    <span @click="modals.airports = false">Save</span>
+                    <span @click="airports_modal_close()">Save</span>
                   </div>
                 </div>
               </div>
@@ -89,59 +103,64 @@
           <span>From</span>
           <div
             id="flights-from-id"
-            :class="[{'grayd': !airport_from.iata},{'blued': airport_from.iata}]"
+            :class="[
+              { grayd: !airport_from.iata },
+              { blued: airport_from.iata },
+            ]"
           >
-            <div class="letter_id">{{airport_iata(airport_from)}}</div>
-            <div class="flights-detail">{{airport_city(airport_from)}}</div>
+            <div class="letter_id">{{ airport_iata(airport_from) }}</div>
+            <div class="flights-detail">{{ airport_city(airport_from) }}</div>
           </div>
         </div>
         <div
           id="flights-from-to-switcher"
           @click="shullfie_airports"
-          :class="[{'grayd': !airport_to.iata || !airport_from.iata}]"
+          :class="[{ grayd: !airport_to.iata || !airport_from.iata }]"
         ></div>
         <div class="flights-to" @click="airports_modal('to')">
           <span>To</span>
-          <div id="flights-to-id" :class="[{'grayd': !airport_to.iata},{'blued': airport_to.iata}]">
-            <div class="letter_id">{{airport_iata(airport_to)}}</div>
-            <div class="flights-detail">{{airport_city(airport_to)}}</div>
+          <div
+            id="flights-to-id"
+            :class="[{ grayd: !airport_to.iata }, { blued: airport_to.iata }]"
+          >
+            <div class="letter_id">{{ airport_iata(airport_to) }}</div>
+            <div class="flights-detail">{{ airport_city(airport_to) }}</div>
           </div>
         </div>
       </div>
 
       <div class="depature-return">
         <div
-          :class="{'modal-show':modals.date}"
+          :class="{ 'modal-show': modals.date }"
           class="flights-modal"
-          @click.self="modals.date=false"
+          @click.self="close_date_popup()"
         >
           <div>
             <VueDatepicker @confirm="close_date_popup" />
-            <div class="savebtn-container">
-              <span @click="modals.passengers=false">Save</span>
-            </div>
           </div>
         </div>
-        <div class="flights-from" @click="modals.date=true">
+        <div class="flights-from" @click="modal_date_open()">
           <span>Depatrure</span>
-          <div id="flights-depature" :class="{'grayd': !date_depature}">
-            <div class="date_formatted">{{date_formatted(date_depature)}}</div>
-            <div class="date_day">{{day_formatted(date_depature)}}</div>
+          <div id="flights-depature" :class="{ grayd: !date_depature }">
+            <div class="date_formatted">
+              {{ date_formatted(date_depature) }}
+            </div>
+            <div class="date_day">{{ day_formatted(date_depature) }}</div>
           </div>
         </div>
-        <div class="flights-to" @click="modals.date=true">
+        <div class="flights-to" @click="modal_date_open()">
           <span>Return</span>
-          <div id="flights-return" :class="{'grayd': !date_return}">
-            <div class="date_formatted">{{date_formatted(date_return)}}</div>
-            <div class="date_day">{{day_formatted(date_return)}}</div>
+          <div id="flights-return" :class="{ grayd: !date_return }">
+            <div class="date_formatted">{{ date_formatted(date_return) }}</div>
+            <div class="date_day">{{ day_formatted(date_return) }}</div>
           </div>
         </div>
       </div>
 
       <div class="passengers">
         <div
-          @click.self="modals.passengers=false"
-          :class="{'modal-show':modals.passengers}"
+          @click.self="modal_passengers_close()"
+          :class="{ 'modal-show': modals.passengers }"
           class="modal-passengers"
         >
           <div>
@@ -161,26 +180,26 @@
               @selectedValue="select_childs"
             ></scroller>
             <div class="savebtn-container">
-              <span @click="modals.passengers=false">Save</span>
+              <span @click="modal_passengers_close()">Save</span>
             </div>
           </div>
-          <span @click="modals.date=false"></span>
+          <span @click="close_date_popup()"></span>
         </div>
 
         <div class="adult">
           <span>Passengers</span>
-          <div id="passengers-adults" @click="modals.passengers=true">
+          <div id="passengers-adults" @click="modal_passengers_open()">
             <div class="passengers-title">Adults</div>
-            <div class="passengers-counter">{{counter.adults}}</div>
+            <div class="passengers-counter">{{ counter.adults }}</div>
             <div class="passengers-description">12+ years</div>
           </div>
         </div>
 
         <div class="child">
-          <span style="visibility: hidden;">Passengers</span>
-          <div id="passengers-children" @click="modals.passengers=true">
+          <span style="visibility: hidden">Passengers</span>
+          <div id="passengers-children" @click="modal_passengers_open()">
             <div class="passengers-title">Children</div>
-            <div class="passengers-counter">{{counter.childs}}</div>
+            <div class="passengers-counter">{{ counter.childs }}</div>
             <div class="passengers-description">2 - 12 years</div>
           </div>
         </div>
@@ -188,22 +207,36 @@
 
       <div class="email_plus_terms">
         <input type="checkbox" id="terms" />
-        <label id="termslabel" for="terms">Ich mochte tolle Angebote erhalten</label>
+        <label id="termslabel" for="terms"
+          >Ich mochte tolle Angebote erhalten</label
+        >
       </div>
       <div class="submitcontainer">
-        <input id="submitbtn" type="submit" class="submit" value="Search flight" />
+        <input
+          id="submitbtn"
+          type="submit"
+          class="submit"
+          value="Search flight"
+        />
       </div>
     </div>
-    <div class="modal-block" :class="{'modal-show':modals.main}">
+    <div class="modal-block" :class="{ 'modal-show': modals.main }">
       <div class="popup" :class="popup_message.class">
-        <div class="congrats-title" :class="popup_message.class">{{popup_message.title}}</div>
-        <p>{{popup_message.message}}</p>
-        <LoadAnimation class="hidden-by-default" :class="{'show-item':state.formsending}" />
+        <div class="congrats-title" :class="popup_message.class">
+          {{ popup_message.title }}
+        </div>
+        <p>{{ popup_message.message }}</p>
+        <LoadAnimation
+          class="hidden-by-default"
+          :class="{ 'show-item': state.formsending }"
+        />
         <div
           class="okbtn hidden-by-default"
-          :class="{'show-item':!state.formsending }"
+          :class="{ 'show-item': !state.formsending }"
           @click="modal_ok_reload"
-        >{{popup_message.okbtn}}</div>
+        >
+          {{ popup_message.okbtn }}
+        </div>
       </div>
     </div>
   </form>
@@ -273,6 +306,14 @@ export default {
     LoadAnimation,
   },
   methods: {
+    body_fix() {
+      var root = document.getElementsByTagName("html")[0];
+      root.setAttribute("class", "html-fixed");
+    },
+    body_unfix() {
+      var root = document.getElementsByTagName("html")[0];
+      root.setAttribute("class", "html-unfixed");
+    },
     modal_ok_reload() {
       if (this.form_is_valid) {
         if (this.redirect_url) {
@@ -281,11 +322,25 @@ export default {
           //location.reload();
         }
       }
+      this.body_unfix();
       this.modals.main = false;
     },
     airports_modal(param) {
+      this.body_fix();
       this.$emit("show_airports_modal", param);
       this.modals.airports = true;
+    },
+    airports_modal_close() {
+      this.modals.airports = false;
+      this.body_unfix();
+    },
+    modal_passengers_open() {
+      this.body_fix();
+      this.modals.passengers = true;
+    },
+    modal_passengers_close() {
+      this.body_unfix();
+      this.modals.passengers = false;
     },
     depature_selection(e) {
       this.airport_from = { city: e.name, iata: e.iata };
@@ -341,10 +396,17 @@ export default {
       }
       return "day";
     },
+    modal_date_open() {
+      this.modals.date = true;
+      this.body_fix();
+    },
     close_date_popup(e) {
-      this.date_depature = e.start;
-      this.date_return = e.end;
+      if (e) {
+        this.date_depature = e.start;
+        this.date_return = e.end;
+      }
       this.modals.date = false;
+      this.body_unfix();
     },
     select_childs(number) {
       this.counter.childs = number;
@@ -358,6 +420,7 @@ export default {
     submitform(form) {
       if (!this.form_is_valid) {
         this.modals.main = true;
+        this.body_fix();
       } else {
         let data = {
           action: "srf_post_gen",
@@ -383,6 +446,7 @@ export default {
           data.senior;
         this.payload = data.payload;
         this.modals.main = true;
+        this.body_fix();
         this.state = { formsending: true, foundFlights: false };
 
         axios
@@ -402,6 +466,11 @@ export default {
           });
       }
     },
+  },
+  async mounted(){
+    const response = await axios.get('/wp-json/flights/v1/getairports');
+    this.airports = JSON.parse(response.data);
+
   },
   computed: {
     form_is_valid() {

@@ -80,8 +80,11 @@ export default {
   },
   computed: {
     filteredOptions() {
-      const filtered = [];
-      let regOption = new RegExp(this.searchFilter, "i");
+      const filtered = []; 
+
+      this.searchFilter = this.searchFilter ? this.searchFilter.split('(') : "";
+      
+      let regOption = new RegExp(this.searchFilter[0], "i");
 
       for (const option of this.options) {
         if (

@@ -1,11 +1,11 @@
 <template>
-  <div class="cube_container" :style="{height:cubeHeight + 'px'}">
+  <div v-if="flightRoute" class="cube_container" :style="{height:cubeHeight + 'px'}">
     <div :class="{'detailed': showDetails}" class="cube">
       <div class="side front" ref="sidefront">
         <div class="flights-results results-airports bg-white flight-airports">
           <div class="results-dashboard-head uppercase">
             <div>Direction</div>
-            <div class="green-text">Saving</div>
+            <div class="green-text">savings</div>
             <div>End PRICE</div>
           </div>
           <div v-if="originalRoute" class="results-table">
@@ -14,6 +14,7 @@
                 <span class="airport-span">{{originalRoute.from}}</span>
                 <span class="span-arrow-right"></span>
                 <span class="airport-span">{{originalRoute.to}}</span>
+                <div v-if="true" class="longfromtext">from {{originalRoute.fromCity}}</div>
               </div>
               <div class="center green-text bold">--</div>
               <div class="center bold">{{priceFormat(originalRoute.bestOffer)}}</div>
@@ -29,6 +30,7 @@
                 <span class="airport-span">{{flight.from}}</span>
                 <span class="span-arrow-right"></span>
                 <span class="airport-span">{{flight.to}}</span>
+                <div v-if="true" class="longfromtext">from {{flight.fromCity}}</div>
               </div>
               <div
                 :class="{'green-text':calculateSaving(flight.bestOffer) > 0}"
@@ -178,7 +180,6 @@ export default {
     },
     SaveLostText(price) {
       let priceParsed = parseInt(price);
-      console.log(priceParsed);
       if (priceParsed > 0) {
         return "Save";
       } else if (priceParsed == 0) {
@@ -231,9 +232,11 @@ export default {
     },
   },
   async mounted() {
-    if (this.flightsdata) {
-      console.log(JSON.parse(this.flightsdata));
-    }
+    // this.flightRoute = JSON.parse(
+    //   '[{"from":"","to":"","fromLongName":"","bestOffer":"0"},{"from":"","to":"","fromLongName":"","bestOffer":"0"},{"from":"","to":"","fromLongName":"","bestOffer":"0"},{"from":"","to":"","fromLongName":"","bestOffer":"0"},{"from":"","to":"","fromLongName":"","bestOffer":"0"}]'
+    // );
+    // this.originalRoute = JSON.parse('{"from":" ","to":" ","bestOffer":"0"}');
+
     let parsed = await this.request(
       `/wp-json/flights/v1/getflight/${this.ids}/${this.postid}`
     );

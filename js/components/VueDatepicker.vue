@@ -99,6 +99,36 @@
               </div>
             </div>
           </div>
+          <div class="vhd-calendar-right2">
+            <div class="calendar-month">
+              <a class="next-arrow" @click="updateCalendar(2)">
+                <div class="arrow arrow-forward" style="width:24px; height:24px"></div>
+              </a>
+              <div
+                class="calendar-month-title"
+              >{{ monthList[thrMonthDate.getMonth()] }} {{ thrMonthDate.getFullYear() }}</div>
+            </div>
+            <div class="calendar-week">
+              <div
+                v-for="(wItem, index) in weekList"
+                :key="index"
+                class="calendar-week-item"
+              >{{ wItem }}</div>
+            </div>
+            <div class="calendar-date">
+              <div v-for="(week, wIndex) in thrMonthAry" :key="wIndex" class="week">
+                <div
+                  v-for="(endDay, dIndex) in week"
+                  :key="dIndex"
+                  :class="dayStatus(endDay)"
+                  class="day"
+                  @click="dayOnClick(endDay)"
+                >
+                  <span v-if="endDay">{{ endDay.getDate() }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="vhd-calendar-footer">
           <div v-if="selectStartDate || selectEndDate" class="reset" @click="reset">{{ resetText }}</div>
@@ -217,12 +247,14 @@ export default {
       active: false,
       startMonthDate: undefined,
       endMonthDate: undefined,
+      thrMonthDate: undefined,
       selectStartDate: undefined,
       selectEndDate: undefined,
       selectMinDate: undefined,
       selectMaxDate: undefined,
       startMonthAry: [],
       endMonthAry: [],
+      thrMonthAry: [],
       clickCount: 0,
     };
   },
@@ -424,8 +456,13 @@ export default {
         this.startMonthDate.getFullYear(),
         this.startMonthDate.getMonth() + 1
       );
+      this.thrMonthDate = new Date(
+        this.endMonthDate.getFullYear(),
+        this.endMonthDate.getMonth() + 1
+      );
       this.startMonthAry = [];
       this.endMonthAry = [];
+      this.thrMonthAry = [];
       this.startMonthAry = this.generateCalendar(
         this.startMonthDate.getFullYear(),
         this.startMonthDate.getMonth()
@@ -433,6 +470,10 @@ export default {
       this.endMonthAry = this.generateCalendar(
         this.endMonthDate.getFullYear(),
         this.endMonthDate.getMonth()
+      );
+      this.thrMonthAry = this.generateCalendar(
+        this.thrMonthDate.getFullYear(),
+        this.thrMonthDate.getMonth()
       );
     },
     updateValue() {
@@ -600,257 +641,4 @@ export default {
 };
 </script>
 <style >
-.fwvdp {
-  grid-column: -1/1;
-  border: none !important;
-}
-* {
-  box-sizing: border-box;
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-}
-svg {
-  fill: #7d7d7d;
-}
-@media (hover: hover) {
-  svg:hover {
-    fill: #4a4a4a;
-  }
-}
-
-.vhd-container.mobile .vhd-picker {
-  width: 300px;
-  padding: 8px;
-}
-
-.vhd-container.mobile .vhd-calendar-left {
-  width: 100%;
-  margin-right: 0;
-}
-.vhd-container.mobile .vhd-calendar-right {
-  display: none;
-}
-.vhd-container.mobile .vhd-calendar .calendar-month .previous-arrow.offset-2 {
-  display: none;
-}
-.vhd-container.mobile .vhd-calendar .calendar-month .previous-arrow.offset-1 {
-  display: inline-block;
-}
-.vhd-container.mobile .vhd-calendar .calendar-month .next-arrow.offset-1 {
-  display: inline-block;
-}
-.vhd-container.mobile .vhd-calendar .calendar-date .week .day {
-  width: calc(100% / 7);
-}
-.vhd-container.mobile .vhd-calendar .calendar-date .week .day.start-date {
-  color: #fff;
-  border-left: none;
-  background-color: #08f;
-  transition: all 0.2s ease;
-}
-.vhd-container.mobile .vhd-calendar .calendar-date .week .day.end-date {
-  color: #fff;
-  border-right: none;
-  background-color: #08f;
-  transition: all 0.2s ease;
-}
-.vhd-container {
-  display: inline-block;
-  position: relative;
-}
-.vhd-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-.vhd-input {
-  min-width: 300px;
-  padding: 8px;
-  border: solid 1px #eee;
-  color: #505050;
-  font-size: 16px;
-  line-height: 32px;
-  outline: none;
-}
-.vhd-input::placeholder {
-  color: #ccc;
-}
-.vhd-picker {
-  z-index: 100;
-  position: absolute;
-  left: 0;
-  width: 100%;
-  min-height: 420px;
-  padding: 24px;
-  background-color: #fff;
-  border-radius: 6px;
-  overflow: hidden;
-  box-sizing: border-box;
-}
-
-.vhd-calendar-footer {
-  position: relative;
-  width: 100%;
-  height: 36px;
-}
-.vhd-calendar-footer .reset,
-.vhd-calendar-footer .confirm {
-  position: absolute;
-  bottom: 0;
-  padding: 0 8px;
-  cursor: pointer;
-}
-
-.vhd-calendar-footer .confirm {
-  color: #2a2a2a;
-  background: #50e3c2;
-  padding: 4px 34px;
-  border-radius: 21px;
-  right: 0;
-}
-.vhd-calendar-footer .reset {
-  left: 0;
-  color: #7d7d7d;
-}
-@media (hover: hover) {
-  .vhd-calendar-footer .reset:hover {
-    color: #4a4a4a;
-  }
-}
-
-@media (hover: hover) {
-  .vhd-calendar-footer .confirm:hover {
-    color: #005299;
-  }
-}
-.vhd-calendar-left,
-.vhd-calendar-right {
-  display: inline-block;
-  vertical-align: top;
-  width: 280px;
-}
-
-.vhd-calendar .calendar-month {
-  position: relative;
-  height: 32px;
-  margin-bottom: 8px;
-}
-.vhd-calendar .calendar-month .next-arrow,
-.vhd-calendar .calendar-month .previous-arrow {
-  position: absolute;
-  top: 0;
-  padding-top: 4px;
-  cursor: pointer;
-}
-.vhd-calendar .calendar-month .next-arrow.disabled,
-.vhd-calendar .calendar-month .previous-arrow.disabled {
-  display: none !important;
-}
-.vhd-calendar .calendar-month .previous-arrow {
-  left: 0;
-}
-.vhd-calendar .calendar-month .next-arrow {
-  right: 0;
-}
-.vhd-calendar .calendar-month .previous-arrow.offset-1 {
-  display: none;
-}
-.vhd-calendar .calendar-month .next-arrow.offset-1 {
-  display: none;
-}
-.vhd-calendar .calendar-month-title {
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 19px;
-  text-align: center;
-  color: #2c3135;
-}
-.vhd-calendar .calendar-week {
-  width: 100%;
-  height: 32px;
-}
-.vhd-calendar .calendar-week-item {
-  float: left;
-  display: inline-block;
-  font-weight: 500;
-  width: calc(100% / 7);
-  height: 20px;
-  text-align: left;
-  font-size: 12px;
-  color: #7f8fa4;
-}
-.vhd-calendar .calendar-date .week {
-  display: block;
-  width: 100%;
-  height: 40px;
-}
-.vhd-calendar .calendar-date .week .day {
-  float: left;
-  margin: 1px 1px 0 0;
-  border-radius: 2px;
-  position: relative;
-  display: inline-block;
-  width: 38px;
-  height: 40px;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 40px;
-  color: #505050;
-  background-color: transparent;
-  text-align: center;
-  cursor: pointer;
-  text-align: left;
-
-  line-height: 28px !important;
-  padding-left: 5px;
-
-  transition: background-color 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-.vhd-calendar .calendar-date .week .day::before,
-.vhd-calendar .calendar-date .week .day::after {
-  content: "";
-  position: absolute;
-  width: 0px;
-  height: 100%;
-  left: 0;
-  background-color: transparent;
-  opacity: 0;
-  transition: opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
-    background-color 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
-    width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-.vhd-calendar .calendar-date .week .day::after {
-  left: auto;
-  right: 0;
-}
-.vhd-calendar .calendar-date .week .day.disabled {
-  color: #ececec;
-  pointer-events: none;
-}
-.vhd-calendar .calendar-date .week .day.in-date-range {
-  background-color: #edf2f5;
-}
-.vhd-calendar .calendar-date .week .day.start-date {
-  position: relative;
-  background-color: #4435d9;
-  border-radius: 2px;
-  color: #fff;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.vhd-calendar .calendar-date .week .day.end-date {
-  position: relative;
-  background-color: #4435d9;
-  border-radius: 2px;
-  color: #fff;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.vhd-calendar .calendar-date .week .day.today {
-  border: solid 1px #08f;
-}
-.vhd-calendar .calendar-date .week .day.forbidden {
-  color: #fed9d8;
-  cursor: not-allowed;
-}
 </style>
